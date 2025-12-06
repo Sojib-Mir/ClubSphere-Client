@@ -1,4 +1,3 @@
-import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/ErrorPage";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
@@ -15,13 +14,17 @@ import ManageOrders from "../pages/Dashboard/Seller/ManageOrders";
 import MyOrders from "../pages/Dashboard/Customer/MyOrders";
 import { createBrowserRouter } from "react-router";
 import LoadingSpinner from "../components/Shared/LoadingSpinner";
+import Clubs from "../pages/Clubs/Clubs";
+import Events from "../pages/Events/Events";
+import About from "../pages/About/About";
+import Home from "../pages/Home/Home/Home";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     errorElement: <ErrorPage />,
-    hydrateFallbackElement: <LoadingSpinner/>,
+    hydrateFallbackElement: <LoadingSpinner />,
     children: [
       {
         index: true,
@@ -29,15 +32,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "/clubs",
-        element: <Home />,
+        element: <Clubs />,
       },
       {
         path: "/events",
-        element: <Home />,
+        element: <Events />,
       },
       {
         path: "/about",
-        element: <Home />,
+        element: <About />,
       },
       {
         path: "/plant/:id",

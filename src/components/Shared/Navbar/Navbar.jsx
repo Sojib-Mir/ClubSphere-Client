@@ -33,8 +33,9 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar shadow-sm md:max-w-7xl w-full mx-auto">
+    <div className="navbar shadow-sm md:max-w-7xl w-full mx-auto rounded-br rounded-bl border-b-amber-400 border-b">
       <div className="navbar-start">
+        {/* phone */}
         <div className="dropdown ">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
@@ -56,18 +57,25 @@ const Navbar = () => {
 
           <ul
             tabIndex="-1"
-            className="menu menu-sm dropdown-content rounded-box z-1 mt-3 w-30 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-9999 mt-3 w-30 p-2 shadow border border-gray-300 dark:border-gray-700"
           >
             {links}
           </ul>
         </div>
-       
+
         <Link to={"/"} className="font-bold text-xl flex items-center">
-          <img className="w-5 h-5 rounded mr-1" src="./logo-square.png" alt="" />
-          Club<sapn className="text-pink-500">Sphere</sapn>
+          <img
+            className="w-5 h-5 rounded mr-1"
+            src="./logo-square.png"
+            alt=""
+          />
+          <p className="hidden lg:block">
+            Club<sapn className="text-pink-500">Sphere</sapn>
+          </p>
         </Link>
       </div>
 
+      {/* desktop */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
@@ -75,7 +83,7 @@ const Navbar = () => {
       <div className="navbar-end">
         {user ? (
           <>
-            <div className="dropdown dropdown-end">
+            <div className="dropdown dropdown-end z-9999">
               <div
                 tabIndex={0}
                 role="button"
@@ -90,7 +98,7 @@ const Navbar = () => {
               </div>
               <ul
                 tabIndex="-1"
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-40 p-2 shadow"
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-40 p-2 shadow border border-gray-300 dark:border-gray-700"
               >
                 {/* Profile */}
                 <li className="transition font-semibold">
@@ -136,8 +144,8 @@ const Navbar = () => {
 
                 {/* LogOut */}
                 <li className="transition font-semibold">
-                  <button className="bg-red-500 text-white" onClick={logOut}>
-                    <HiOutlineLogout /> Logout
+                  <button className="text-red-400" onClick={logOut}>
+                    <HiOutlineLogout />Logout
                   </button>
                 </li>
               </ul>

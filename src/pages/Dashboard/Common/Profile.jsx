@@ -1,8 +1,10 @@
 import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 import useAuth from "../../../hooks/useAuth";
 import useRole from "./../../../hooks/useRole";
+import UseTitle from "./../../../hooks/useTitle";
 
 const Profile = () => {
+  UseTitle("Profile");
   const { user } = useAuth();
   const [role, isRoleLoading] = useRole();
 
