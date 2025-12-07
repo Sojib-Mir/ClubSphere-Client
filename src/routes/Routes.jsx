@@ -18,6 +18,10 @@ import Clubs from "../pages/Clubs/Clubs";
 import Events from "../pages/Events/Events";
 import About from "../pages/About/About";
 import Home from "../pages/Home/Home/Home";
+import EventDetailsCard from "../pages/Events/EventDetailsCard";
+import ClubDetailsCard from "../pages/Clubs/ClubDetailsCard";
+import ManageClubs from "../pages/Dashboard/Admin/ManageClubs";
+import TransactionsHistory from "../pages/Dashboard/Admin/TransactionsHistory";
 
 export const router = createBrowserRouter([
   {
@@ -35,16 +39,20 @@ export const router = createBrowserRouter([
         element: <Clubs />,
       },
       {
+        path: "/clubs/:id",
+        element: <ClubDetailsCard />,
+      },
+      {
         path: "/events",
         element: <Events />,
       },
       {
-        path: "/about",
-        element: <About />,
+        path: "/events/:id",
+        element: <EventDetailsCard />,
       },
       {
-        path: "/plant/:id",
-        element: <PlantDetails />,
+        path: "/about",
+        element: <About />,
       },
     ],
   },
@@ -87,6 +95,22 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ManageUsers />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "manage-clubs",
+        element: (
+          <PrivateRoute>
+            <ManageClubs />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "transactions-history",
+        element: (
+          <PrivateRoute>
+            <TransactionsHistory />
           </PrivateRoute>
         ),
       },

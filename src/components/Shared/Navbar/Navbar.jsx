@@ -70,7 +70,7 @@ const Navbar = () => {
             alt=""
           />
           <p className="hidden lg:block">
-            Club<sapn className="text-pink-500">Sphere</sapn>
+            Clubs<sapn className="text-pink-500">Phere</sapn>
           </p>
         </Link>
       </div>
