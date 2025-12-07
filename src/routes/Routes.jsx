@@ -106,14 +106,14 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "transactions-history",
-        element: (
-          <PrivateRoute>
-            <TransactionsHistory />
-          </PrivateRoute>
-        ),
-      },
+      // {
+      //   path: "transactions-history",
+      //   element: (
+      //     <PrivateRoute>
+      //       <TransactionsHistory />
+      //     </PrivateRoute>
+      //   ),
+      // },
       {
         path: "profile",
         element: (
