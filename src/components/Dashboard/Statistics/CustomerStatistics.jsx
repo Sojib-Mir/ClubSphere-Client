@@ -1,5 +1,9 @@
 const CustomerStatistics = () => {
-  return <div>Customer Statistics Page</div>
-}
+  return (
+    <div className="container mx-auto px-4 sm:px-8">
+      <h1>Customer Statistics Page</h1>
+    </div>
+  );
+};
 
-export default CustomerStatistics
+export default CustomerStatistics;

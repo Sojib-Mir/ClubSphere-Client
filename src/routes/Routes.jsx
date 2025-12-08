@@ -1,17 +1,12 @@
 import ErrorPage from "../pages/ErrorPage";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
-import PlantDetails from "../pages/PlantDetails/PlantDetails";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
-import AddPlant from "../pages/Dashboard/Seller/AddPlant";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import Profile from "../pages/Dashboard/Common/Profile";
 import Statistics from "../pages/Dashboard/Common/Statistics";
 import MainLayout from "../layouts/MainLayout";
-import MyInventory from "../pages/Dashboard/Seller/MyInventory";
-import ManageOrders from "../pages/Dashboard/Seller/ManageOrders";
-import MyOrders from "../pages/Dashboard/Customer/MyOrders";
 import { createBrowserRouter } from "react-router";
 import LoadingSpinner from "../components/Shared/LoadingSpinner";
 import Clubs from "../pages/Clubs/Clubs";
@@ -22,6 +17,15 @@ import EventDetailsCard from "../pages/Events/EventDetailsCard";
 import ClubDetailsCard from "../pages/Clubs/ClubDetailsCard";
 import ManageClubs from "../pages/Dashboard/Admin/ManageClubs";
 import TransactionsHistory from "../pages/Dashboard/Admin/TransactionsHistory";
+import AddEvent from "../pages/Dashboard/Manager/AddEvent";
+import MyClubs from "../pages/Dashboard/Manager/MyClubs";
+import ManageEvents from "./../pages/Dashboard/Manager/ManageEvents";
+import RagisterEvents from "../pages/Dashboard/Manager/RagisterEvents";
+import ClubMembers from "../pages/Dashboard/Manager/ClubMembers";
+import MyAllClubs from "../pages/Dashboard/Customer/MyAllClubs";
+import MyAllEvents from "../pages/Dashboard/Customer/MyAllEvents";
+import PaymentHistory from "../pages/Dashboard/Customer/PaymentHistory";
+import PaymentSuccess from "../pages/Clubs/PaymentSuccess";
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: "/clubs/:id",
         element: <ClubDetailsCard />,
+      },
+      {
+        path: "payment-success",
+        element: <PaymentSuccess />,
       },
       {
         path: "/events",
@@ -74,22 +82,42 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+
+      // Manager's route
       {
-        path: "add-plant",
+        path: "add-event",
         element: (
           <PrivateRoute>
-            <AddPlant />
+            <AddEvent />
           </PrivateRoute>
         ),
       },
       {
-        path: "my-inventory",
+        path: "my-clubs",
         element: (
           <PrivateRoute>
-            <MyInventory />
+            <MyClubs />
           </PrivateRoute>
         ),
       },
+      {
+        path: "club-members",
+        element: (
+          <PrivateRoute>
+            <ClubMembers />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "manage-events",
+        element: <ManageEvents />,
+      },
+      {
+        path: "ragister-events",
+        element: <RagisterEvents />,
+      },
+
+      // Admin's route
       {
         path: "manage-users",
         element: (
@@ -114,6 +142,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+
       {
         path: "profile",
         element: (
@@ -122,17 +151,31 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+
+      // user's route
       {
-        path: "my-orders",
+        path: "my-clubs",
         element: (
           <PrivateRoute>
-            <MyOrders />
+            <MyAllClubs />
           </PrivateRoute>
         ),
       },
       {
-        path: "manage-orders",
-        element: <ManageOrders />,
+        path: "my-events",
+        element: (
+          <PrivateRoute>
+            <MyAllEvents />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment-history",
+        element: (
+          <PrivateRoute>
+            <PaymentHistory />
+          </PrivateRoute>
+        ),
       },
     ],
   },

@@ -86,6 +86,7 @@ const EventCard = ({ event }) => {
       <div className="px-2 pb-5 pt-0">
         <Link
           to={`/events/:id`}
+          event={event}
           className="btn border-none w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition duration-150"
         >
           See Details

@@ -1,62 +1,21 @@
 import React from "react";
 import ClubCard from "./ClubCard";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
 const Clubs = () => {
-  const clubsData = [
-    {
-      clubId: 1001,
-      clubName: "The Night Sky Explorers",
-      description:
-        "Join us to capture the beauty of the cosmos and master long exposure photography.",
-      category: "Photography",
-      location: "Khulna, Bangladesh",
-      bannerImage: "https://i.ibb.co.com/C56GVSYZ/1.jpg", // এখানে আপনার ছবির URL দিন
-      membershipFee: 500, // 0 হলে 'Free' দেখাবে
-      status: "approved", // 'pending' বা 'rejected' হতে পারে
-      managerEmail: "manager@example.com",
-      createdAt: "2025-10-01",
+  const { data: clubs = [], isLoading } = useQuery({
+    queryKey: ["clubs"],
+    queryFn: async () => {
+      const result = await axios(`${import.meta.env.VITE_API_URL}/clubs`);
+      return result.data;
     },
+  });
 
-    {
-      clubId: 1002,
-      clubName: "Sky Explorers",
-      description:
-        "Join us to capture the beauty of the cosmos and master long exposure photography.",
-      category: "Photography",
-      location: "Dhaka, Uttara",
-      bannerImage: "https://i.ibb.co.com/hFwmHMjZ/2.jpg", // এখানে আপনার ছবির URL দিন
-      membershipFee: 0, // 0 হলে 'Free' দেখাবে
-      status: "approved", // 'pending' বা 'rejected' হতে পারে
-      managerEmail: "manager@example.com",
-      createdAt: new Date()
-        .toLocaleTimeString("en-US", {
-          timeZone: "Asia/Dhaka",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })
-        .replace(/, /g, "T")
-        .replace(/\//g, "-"),
+  console.log(clubs);
 
-      updatedAt: new Date()
-        .toLocaleTimeString("en-US", {
-          timeZone: "Asia/Dhaka",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })
-        .replace(/, /g, "T")
-        .replace(/\//g, "-"),
-    },
-  ];
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div>
@@ -104,8 +63,8 @@ const Clubs = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 pt-2 pb-5">
-        {clubsData.map((club) => (
-          <ClubCard key={club.clubId} club={club} />
+        {clubs.map((club) => (
+          <ClubCard key={club._id} club={club} />
         ))}
       </div>
     </div>

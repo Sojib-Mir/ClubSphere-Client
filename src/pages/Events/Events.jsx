@@ -19,6 +19,22 @@ const Events = () => {
       image: "https://i.ibb.co.com/C56GVSYZ/1.jpg",
       clubName: "The Night Sky Explorers",
     },
+    {
+      clubId: "exp002",
+      title: "Winter Stargazing",
+      description:
+        "A practical session on deep-sky observation and astrophotography techniques.",
+      eventDate: "2025-12-20T19:00:00+06:00",
+      location: "Dhaka University Campus Field",
+      isPaid: true,
+      eventFee: 1500,
+      maxAttendees: "Unlimited",
+      currentAttendees: 15,
+
+      createdAt: "2025-10-01T10:00:00+06:00",
+      image: "https://i.ibb.co.com/C56GVSYZ/1.jpg",
+      clubName: "The Night Sky Explorers",
+    },
   ];
 
   return (

@@ -7,6 +7,7 @@ const Profile = () => {
   UseTitle("Profile");
   const { user } = useAuth();
   const [role, isRoleLoading] = useRole();
+  console.log(role);
 
   if (isRoleLoading) return <LoadingSpinner />;
 
