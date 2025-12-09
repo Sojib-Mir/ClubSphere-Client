@@ -16,6 +16,8 @@ const formatDate = (isoString) => {
 
 const ClubDetailsCard = () => {
   const { id } = useParams();
+  const { user } = useAuth();
+
   const { data: clubs = {}, isLoading } = useQuery({
     queryKey: ["clubs", id],
     queryFn: async () => {
@@ -35,7 +37,20 @@ const ClubDetailsCard = () => {
     managerEmail,
     createdAt,
     _id,
-  } = clubs;
+  } = clubs || {};
+
+  const { data: memberships = {}, isLoading: membershipLoading } = useQuery({
+    queryKey: ["membership", id],
+    queryFn: async () => {
+      const result = await axios(
+        `${import.meta.env.VITE_API_URL}/memberships/${id}?email=${user?.email}`
+      );
+      return result.data;
+    },
+  });
+
+  const { paymentStatus, membar } = memberships || {};
+  const isMemberOfThisClub = paymentStatus === "paid" && membar === user?.email;
 
   const creationDate = formatDate(createdAt);
   const navigate = useNavigate();
@@ -43,31 +58,42 @@ const ClubDetailsCard = () => {
   const feeColor = membershipFee > 0 ? "text-red-700" : "text-green-700";
   const categoryIcon = category?.includes("Science") ? Clock : Users;
 
-  const { user } = useAuth();
-
   const handlePayment = async () => {
     const paymentInfo = {
+      type: "paid",
       clubId: _id,
       clubName,
-      membershipFee: Number(membershipFee),
+      price: Number(membershipFee),
       bannerImage,
-      quantity: 1,
+      description,
       customer: {
         name: user?.displayName,
         email: user?.email,
       },
     };
-
     const { data } = await axios.post(
       `${import.meta.env.VITE_API_URL}/create-checkout-session`,
       paymentInfo
     );
     window.location.href = data.url;
-    console.log("payment========>", data.url);
-    console.log("data========>", data);
+
+    // membership register info
+    const membershipData = {
+      clubId: _id,
+      clubName,
+      status: clubs?.status,
+      paymentStatus: "paid",
+      membar: user?.email,
+      joinedAt: new Date().toISOString(),
+    };
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/memberships`,
+      membershipData
+    );
   };
 
   if (isLoading) return <LoadingSpinner />;
+  if (membershipLoading) return <LoadingSpinner />;
 
   return (
     <>
@@ -194,12 +220,18 @@ const ClubDetailsCard = () => {
                 </p>
               </div>
 
-              {/* Join Button */}
               <button
                 onClick={handlePayment}
-                className="w-full py-3 font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 transition duration-300 shadow-md shadow-green-300 text-xl cursor-pointer"
+                disabled={isMemberOfThisClub}
+                className={`w-full py-3 font-semibold text-white rounded-lg transition duration-300 shadow-md text-xl ${
+                  isMemberOfThisClub
+                    ? "bg-gray-400 cursor-not-allowed shadow-none"
+                    : "bg-green-600 hover:bg-green-700 shadow-green-300 cursor-pointer"
+                }`}
               >
-                {membershipFee > 0 ? "Join & Pay Now" : "Join Club FREE"}
+                {isMemberOfThisClub
+                  ? "Already Joined This Club"
+                  : "Join & Pay Now"}
               </button>
 
               <p className="mt-3 text-center text-sm text-gray-500">
