@@ -7,6 +7,7 @@ import axios from "axios";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import { SiDinersclub } from "react-icons/si";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const formatDate = (isoString) => {
   const date = new Date(isoString);
@@ -17,6 +18,7 @@ const formatDate = (isoString) => {
 const ClubDetailsCard = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const { data: clubs = {}, isLoading } = useQuery({
     queryKey: ["clubs", id],
@@ -37,12 +39,13 @@ const ClubDetailsCard = () => {
     managerEmail,
     createdAt,
     _id,
+    clubId,
   } = clubs || {};
 
   const { data: memberships = {}, isLoading: membershipLoading } = useQuery({
     queryKey: ["membership", id],
     queryFn: async () => {
-      const result = await axios(
+      const result = await axiosSecure(
         `${import.meta.env.VITE_API_URL}/memberships/${id}?email=${user?.email}`
       );
       return result.data;
@@ -71,7 +74,7 @@ const ClubDetailsCard = () => {
         email: user?.email,
       },
     };
-    const { data } = await axios.post(
+    const { data } = await axiosSecure.post(
       `${import.meta.env.VITE_API_URL}/create-checkout-session`,
       paymentInfo
     );
@@ -81,6 +84,7 @@ const ClubDetailsCard = () => {
     const membershipData = {
       clubId: _id,
       clubName,
+      bannerImage,
       status: clubs?.status,
       paymentStatus: "paid",
       membar: user?.email,
@@ -149,8 +153,7 @@ const ClubDetailsCard = () => {
               <DetailCard
                 Icon={SiDinersclub}
                 title="Club ID"
-                value={_id}
-                isSmallValue={true}
+                value={clubId}
                 color="bg-yellow-50"
                 textColor="text-yellow-700"
               />
@@ -216,7 +219,7 @@ const ClubDetailsCard = () => {
                   </span>
                 </p>
                 <p className="text-sm text-gray-500 border-t pt-2">
-                  Club ID: {_id}
+                  Club ID: {clubId}
                 </p>
               </div>
 

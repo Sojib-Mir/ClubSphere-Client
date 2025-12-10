@@ -1,12 +1,5 @@
-export const DetailCard = ({
-  Icon,
-  title,
-  value,
-  color,
-  textColor,
-  isSmallValue,
-}) => {
-  const valueFontSizeClass = isSmallValue ? "text-[10px]" : "text-sm";
+export const DetailCard = ({ Icon, title, value, color, textColor }) => {
+  const valueFontSizeClass = "text-sm";
   return (
     <div className={`${color} p-3 rounded-lg flex items-center space-x-3`}>
       <Icon className={`w-6 h-6 ${textColor}`} />

@@ -68,7 +68,7 @@ const Sidebar = () => {
                     alt=""
                   />
                 </span>{" "}
-                <sapn className="text-pink-500">Club Sphere</sapn>
+                <span className="text-pink-500">Club Sphere</span>
               </Link>
             </div>
           </div>

@@ -1,41 +1,19 @@
 import React from "react";
 import EventCard from "./EventCard";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
 const Events = () => {
-  const data = [
-    {
-      clubId: "exp001",
-      title: "Winter Stargazing Workshop",
-      description:
-        "A practical session on deep-sky observation and astrophotography techniques.",
-      eventDate: "2025-12-20T19:00:00+06:00",
-      location: "Dhaka University Campus Field",
-      isPaid: true,
-      eventFee: 1500,
-      maxAttendees: "Unlimited",
-      currentAttendees: 15,
-
-      createdAt: "2025-10-01T10:00:00+06:00",
-      image: "https://i.ibb.co.com/C56GVSYZ/1.jpg",
-      clubName: "The Night Sky Explorers",
+  const { data: events = [], isLoading } = useQuery({
+    queryKey: ["events"],
+    queryFn: async () => {
+      const result = await axios(`${import.meta.env.VITE_API_URL}/events`);
+      return result.data;
     },
-    {
-      clubId: "exp002",
-      title: "Winter Stargazing",
-      description:
-        "A practical session on deep-sky observation and astrophotography techniques.",
-      eventDate: "2025-12-20T19:00:00+06:00",
-      location: "Dhaka University Campus Field",
-      isPaid: true,
-      eventFee: 1500,
-      maxAttendees: "Unlimited",
-      currentAttendees: 15,
+  });
 
-      createdAt: "2025-10-01T10:00:00+06:00",
-      image: "https://i.ibb.co.com/C56GVSYZ/1.jpg",
-      clubName: "The Night Sky Explorers",
-    },
-  ];
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div>
@@ -84,8 +62,8 @@ const Events = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 pt-2 pb-5">
-        {data.map((event) => (
-          <EventCard key={event.clubId} event={event} />
+        {events.map((event) => (
+          <EventCard key={event._id} event={event} />
         ))}
       </div>
     </div>

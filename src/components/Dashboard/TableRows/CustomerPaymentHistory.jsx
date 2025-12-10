@@ -1,42 +1,35 @@
-// import { useState } from "react";
-// import DeleteModal from "../../Modal/DeleteModal";
-
-const CustomerOrderDataRow = ({ clubs }) => {
+const CustomerPaymentHistory = ({ payment }) => {
   const formatDate = (isoString) => {
     const date = new Date(isoString);
-    const dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
+    const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const timeOptions = { hour: "2-digit", minute: "2-digit", hour12: true };
     return {
       date: date.toLocaleDateString("en-US", dateOptions),
       time: date.toLocaleTimeString("en-US", timeOptions),
     };
   };
-  const { membershipFee, bannerImage, category, clubName, status, clubId } =
-    clubs.club;
 
-  const { transactionId, paymentDate } = clubs;
+  const {
+    membershipFee,
+    category,
+    clubName,
+    status,
+    clubId,
+    _id,
+  } = payment.club;
+
+  const { transactionId, paymentDate } = payment;
+
   const { date } = formatDate(paymentDate);
 
   return (
     <tr>
-      {/* Image */}
-      <td className="px-5 py-2 border-b border-gray-200 bg-white text-sm">
-        <div className="flex items-center">
-          <div className="shrink-0">
-            <div className="block relative">
-              <img
-                alt={clubName}
-                src={bannerImage}
-                className="mx-auto object-cover rounded h-10 w-15 "
-              />
-            </div>
-          </div>
-        </div>
-      </td>
-
       {/* Club Name */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
         <p className="text-gray-900">{clubName}</p>
+        <p className="text-gray-900 text-[10px]">
+          Club Id : <span className="text-[10px]"> {_id} </span>
+        </p>
       </td>
 
       {/* Club Id */}
@@ -87,4 +80,4 @@ const CustomerOrderDataRow = ({ clubs }) => {
   );
 };
 
-export default CustomerOrderDataRow;
+export default CustomerPaymentHistory;

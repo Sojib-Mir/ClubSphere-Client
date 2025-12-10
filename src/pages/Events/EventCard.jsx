@@ -15,9 +15,7 @@ const EventCard = ({ event }) => {
       options.hour = "2-digit";
       options.minute = "2-digit";
     }
-
     const datePart = date.toLocaleDateString("en-GB", options);
-
     const timePart = includeTime
       ? date.toLocaleTimeString("en-GB", {
           hour: "2-digit",
@@ -26,9 +24,11 @@ const EventCard = ({ event }) => {
           timeZone: "Asia/Dhaka",
         })
       : "";
-
     return `${datePart.split(",")[0]} | ${timePart.replace(",", "")}`;
   };
+
+  const { _id, eventDate, title, description, image, location, clubName } =
+    event || {};
 
   return (
     <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700">
@@ -36,12 +36,12 @@ const EventCard = ({ event }) => {
       <div className="relative">
         <img
           className="w-full h-48 object-cover rounded-t-xl hover:scale-106 transition-transform duration-200"
-          src={event.image}
-          alt={event.title}
+          src={image}
+          alt={title}
         />
         {/* Club Name */}
         <span className="absolute bottom-1 right-8 px-3 py-1 text-sm font-semibold text-white bg-black/50 rounded-md shadow-md">
-          Hosted by: {event.clubName}
+          Hosted by: {clubName}
         </span>
       </div>
 
@@ -51,13 +51,13 @@ const EventCard = ({ event }) => {
         <div className="text-sm font-semibold text-blue-600 mb-1.5">
           <span className="text-[16px]">Start Time:</span>{" "}
           <span className="bg-blue-100 px-px rounded-md">
-            {formatToBDT(event.eventDate)} BDT
+            {formatToBDT(eventDate)} BDT
           </span>
         </div>
 
         {/* event name */}
         <h2 className="font-bold text-2xl text-gray-900 mb-1.5 truncate">
-          {event.title}
+          {title}
         </h2>
 
         {/* location */}
@@ -73,19 +73,19 @@ const EventCard = ({ event }) => {
               clipRule="evenodd"
             />
           </svg>
-          {event.location}
+          {location}
         </p>
 
         {/* description */}
         <p className="text-gray-700 text-base mb-1.5 overflow-hidden line-clamp-2">
-          {event.description}
+          {description}
         </p>
       </div>
 
       {/* See Details */}
       <div className="px-2 pb-5 pt-0">
         <Link
-          to={`/events/:id`}
+          to={`/events/${_id}`}
           event={event}
           className="btn border-none w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition duration-150"
         >

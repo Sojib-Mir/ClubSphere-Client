@@ -1,10 +1,137 @@
-import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
+import { Link } from "react-router";
+import UseTitle from "../../../hooks/useTitle";
+import CustomerPaymentHistory from "../../../components/Dashboard/TableRows/CustomerPaymentHistory";
 
 const PaymentHistory = () => {
+  UseTitle("My-Payment-History");
+  const { user, loading } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  const { data: myPayments = [], isLoading } = useQuery({
+    queryKey: ["/my-payment-history", user?.email],
+    enabled: !!user?.email && !loading,
+
+    queryFn: async () => {
+      const result = await axiosSecure(
+        `${import.meta.env.VITE_API_URL}/my-payment-history?email=${
+          user?.email
+        }`
+      );
+      return result.data;
+    },
+  });
+
+  if (isLoading || loading) return <LoadingSpinner />;
   return (
-    <div className="container mx-auto px-4 sm:px-8">
-      <h1>My Payment History</h1>
-    </div>
+    <>
+      {myPayments.length === 0 ? (
+        <div className="flex justify-center items-center mx-auto min-h-screen ">
+          <div className="flex flex-col items-center justify-center p-10 bg-white rounded-lg shadow-xl max-w-lg mx-auto mt-10 border border-gray-100">
+            <svg
+              className="w-16 h-16 text-gray-400 mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              ></path>
+            </svg>
+
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">
+              No Transaction History Found
+            </h2>
+
+            <p className="text-gray-600 text-center mb-6">
+              It looks like you haven't joined any clubs or completed a
+              transaction yet.
+            </p>
+
+            <Link
+              to="/clubs"
+              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300 ease-in-out"
+            >
+              Explore Clubs
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="container mx-auto px-4 sm:px-2">
+          <div className="py-2">
+            <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+              <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
+                <table className="min-w-full leading-normal">
+                  <thead>
+                    <tr>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      >
+                        Club Name
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      >
+                        club Id
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      >
+                        Category
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      >
+                        Price
+                      </th>
+
+                      <th
+                        scope="col"
+                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      >
+                        Status
+                      </th>
+
+                      <th
+                        scope="col"
+                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      >
+                        Transaction Id
+                      </th>
+                      <th
+                        scope="col"
+                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      >
+                        Payment Date
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {myPayments.map((payment) => (
+                      <CustomerPaymentHistory
+                        key={payment._id}
+                        payment={payment}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

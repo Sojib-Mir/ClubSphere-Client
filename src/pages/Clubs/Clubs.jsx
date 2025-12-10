@@ -5,6 +5,7 @@ import axios from "axios";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
 const Clubs = () => {
+  
   const { data: clubs = [], isLoading } = useQuery({
     queryKey: ["clubs"],
     queryFn: async () => {

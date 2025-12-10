@@ -12,7 +12,11 @@ const ManagerMenu = () => {
         label="Add Event"
         address="add-event"
       />
-      <MenuItem icon={FaCcDinersClub} label="My Clubs" address="my-clubs" />
+      <MenuItem
+        icon={FaCcDinersClub}
+        label="My Clubs"
+        address="manager-clubs"
+      />
 
       <MenuItem
         icon={HiUserGroup}

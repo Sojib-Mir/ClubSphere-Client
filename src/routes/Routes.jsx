@@ -18,14 +18,14 @@ import ClubDetailsCard from "../pages/Clubs/ClubDetailsCard";
 import ManageClubs from "../pages/Dashboard/Admin/ManageClubs";
 import TransactionsHistory from "../pages/Dashboard/Admin/TransactionsHistory";
 import AddEvent from "../pages/Dashboard/Manager/AddEvent";
-import MyClubs from "../pages/Dashboard/Manager/MyClubs";
 import ManageEvents from "./../pages/Dashboard/Manager/ManageEvents";
 import RagisterEvents from "../pages/Dashboard/Manager/RagisterEvents";
 import ClubMembers from "../pages/Dashboard/Manager/ClubMembers";
-import MyAllClubs from "../pages/Dashboard/Customer/MyAllClubs";
 import MyAllEvents from "../pages/Dashboard/Customer/MyAllEvents";
 import PaymentHistory from "../pages/Dashboard/Customer/PaymentHistory";
 import PaymentSuccess from "../pages/Clubs/PaymentSuccess";
+import MyAllClubs from "./../pages/Dashboard/Customer/MyAllClubs";
+import ManagerClubs from "../pages/Dashboard/Manager/ManagerClubs";
 
 export const router = createBrowserRouter([
   {
@@ -93,10 +93,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "my-clubs",
+        path: "manager-clubs",
         element: (
           <PrivateRoute>
-            <MyClubs />
+            <ManagerClubs />
           </PrivateRoute>
         ),
       },

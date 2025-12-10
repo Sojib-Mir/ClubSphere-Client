@@ -1,22 +1,14 @@
 import { Calendar, MapPin, DollarSign, Users, Clock } from "lucide-react";
 import { DetailCard } from "./DetailsCard";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { MdKeyboardBackspace } from "react-icons/md";
-
-const eventData = {
-  clubId: "exp001",
-  title: "Winter Stargazing Workshop",
-  description:
-    "A practical session on deep-sky observation and astrophotography techniques. Join us for a night under the stars to learn deep-sky observation techniques, use telescopes, and capture the cosmos with your camera. No prior experience is required.",
-  eventDate: "2025-12-20T19:00:00+06:00",
-  location: "Dhaka University Campus Field",
-  isPaid: true,
-  eventFee: "Free",
-  attendees: "Unlimited",
-  createdAt: "2025-10-01T10:00:00+06:00",
-  image: "https://i.ibb.co.com/C56GVSYZ/1.jpg",
-  clubName: "The Night Sky Explorers",
-};
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import useAuth from "../../hooks/useAuth";
+import { SiDinersclub } from "react-icons/si";
+import toast from "react-hot-toast";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const formatDate = (isoString) => {
   const date = new Date(isoString);
@@ -29,22 +21,91 @@ const formatDate = (isoString) => {
 };
 
 const EventDetailsCard = () => {
+  const { id } = useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const { data: events = {}, isLoading } = useQuery({
+    queryKey: ["events", id],
+    queryFn: async () => {
+      const result = await axios(
+        `${import.meta.env.VITE_API_URL}/events/${id}`
+      );
+
+      return result.data;
+    },
+  });
+
   const {
     title,
     description,
     eventDate,
     location,
-    isPaid,
     eventFee,
     attendees,
     image,
     clubName,
     clubId,
     createdAt,
-  } = eventData;
+    _id,
+  } = events;
+
+  const { data: registerEvent = {}, isLoading: registerLoading } = useQuery({
+    queryKey: ["register-event", id],
+    queryFn: async () => {
+      const result = await axios(
+        `${import.meta.env.VITE_API_URL}/event-register/${id}?email=${
+          user?.email
+        }`
+      );
+      return result.data;
+    },
+  });
+
+  const { status, userEmail } = registerEvent || {};
+  const isRegisterOfThisEvent =
+    status === "registered" && userEmail === user?.email;
+
   const { date, time } = formatDate(eventDate);
   const { date: creationDate } = formatDate(createdAt);
-  const navigate = useNavigate();
+
+  const axiosSecure = useAxiosSecure();
+
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: async (payload) =>
+      await axiosSecure.post(`/event-register`, payload),
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success("Event Register Successful!");
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+    retry: 3,
+  });
+
+  const handleRegisterEvent = async () => {
+    try {
+      const eventRegisterInfo = {
+        eventName: title,
+        eventId: _id,
+        clubId,
+        clubName,
+        userEmail: user?.email,
+        status: "Registered",
+        registeredAt: new Date().toLocaleDateString(),
+      };
+
+      await mutateAsync(eventRegisterInfo);
+      navigate("/dashboard/my-events");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  if (isLoading) return <LoadingSpinner />;
+  if (isPending) return <LoadingSpinner />;
+  if (registerLoading) return <LoadingSpinner />;
 
   return (
     <>
@@ -53,7 +114,7 @@ const EventDetailsCard = () => {
         <div className="py-2 ">
           <button
             onClick={() => navigate(-1)}
-            className="rounded px-2 cursor-pointer font-semibold bg-pink-400 text-black btn-sm"
+            className="rounded px-4 py-2 cursor-pointer font-semibold bg-sky-700 text-white hover:text-black text-sm hover:bg-pink-500 transition duration-200"
           >
             <span className="flex justify-center items-center">
               <MdKeyboardBackspace className="mr-2" />
@@ -99,17 +160,18 @@ const EventDetailsCard = () => {
                 color="bg-red-50"
                 textColor="text-red-700"
               />
-              <DetailCard
-                Icon={DollarSign}
-                title="Fee"
-                value={isPaid ? `৳ ${eventFee}` : "FREE"}
-                color="bg-green-50"
-                textColor="text-green-700"
-              />
+
               <DetailCard
                 Icon={Users}
                 title="Attendees"
                 value={`${attendees}`}
+                color="bg-yellow-50"
+                textColor="text-yellow-700"
+              />
+              <DetailCard
+                Icon={SiDinersclub}
+                title="Club ID"
+                value={clubId}
                 color="bg-yellow-50"
                 textColor="text-yellow-700"
               />
@@ -132,7 +194,7 @@ const EventDetailsCard = () => {
                 Location Details
               </h2>
               <p className="text-gray-700 text-lg font-medium">{location}</p>
-              <p className="text-sm text-gray-500 mt-1">Club ID: {clubId}</p>
+              <p className="text-sm text-gray-500 mt-1">Event ID : {_id}</p>
             </section>
           </div>
 
@@ -147,7 +209,7 @@ const EventDetailsCard = () => {
                 <p className="flex justify-between items-center text-gray-700">
                   <span>Event Fee:</span>
                   <span className={`text-xl font-extrabold text-indigo-700`}>
-                    Free
+                    {eventFee}
                   </span>
                 </p>
                 <p className="text-sm text-gray-500 border-t pt-2">
@@ -156,8 +218,18 @@ const EventDetailsCard = () => {
               </div>
 
               {/* Registration Button */}
-              <button className="w-full py-3 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition duration-300 shadow-md shadow-indigo-300 text-xl cursor-pointer">
-                Register Now
+              <button
+                onClick={handleRegisterEvent}
+                disabled={isRegisterOfThisEvent}
+                className={`w-full py-3 font-semibold text-white rounded-lg transition duration-300 shadow-md text-xl ${
+                  isRegisterOfThisEvent
+                    ? "bg-gray-400 cursor-not-allowed shadow-none"
+                    : "bg-green-600 hover:bg-green-700 shadow-green-300 cursor-pointer"
+                }`}
+              >
+                {isRegisterOfThisEvent
+                  ? "Already Registered This Event"
+                  : "Register Now"}
               </button>
             </div>
           </div>
