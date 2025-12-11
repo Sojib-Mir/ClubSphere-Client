@@ -109,7 +109,7 @@ const EventDetailsCard = () => {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto my-8 p-4">
+      <div className="my-4 p-4">
         {/* Back Button */}
         <div className="py-2 ">
           <button
@@ -123,7 +123,7 @@ const EventDetailsCard = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
           <div className="lg:col-span-2">
             {/* Event Banner */}
             <div className="relative mb-6 rounded-xl overflow-hidden shadow-xl">
@@ -133,13 +133,13 @@ const EventDetailsCard = () => {
                 className="w-full object-cover h-64 md:h-96"
               />
               <div className="absolute inset-0 bg-opacity-40 flex items-end p-6">
-                <div>
-                  <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2">
+                <div className="flex flex-col">
+                  <span className="text-xl md:text-2xl font-extrabold text-white mb-2 bg-black/30 text-center rounded py-px px-2 w-auto">
                     {title}
-                  </h1>
-                  <p className="text-lg text-indigo-200">
+                  </span>
+                  <span className="text-sm font-extrabold text-white mb-2 bg-black/30 text-center rounded py-px px-2 w-auto md:w-9/12">
                     Hosted by: {clubName}
-                  </p>
+                  </span>
                 </div>
               </div>
             </div>

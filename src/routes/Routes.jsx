@@ -26,6 +26,7 @@ import PaymentHistory from "../pages/Dashboard/Customer/PaymentHistory";
 import PaymentSuccess from "../pages/Clubs/PaymentSuccess";
 import MyAllClubs from "./../pages/Dashboard/Customer/MyAllClubs";
 import ManagerClubs from "../pages/Dashboard/Manager/ManagerClubs";
+import AddClub from "../pages/Dashboard/Manager/AddClub";
 
 export const router = createBrowserRouter([
   {
@@ -92,6 +93,16 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+
+      {
+        path: "add-club",
+        element: (
+          <PrivateRoute>
+            <AddClub />
+          </PrivateRoute>
+        ),
+      },
+
       {
         path: "manager-clubs",
         element: (

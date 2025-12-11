@@ -9,12 +9,6 @@ import { SiDinersclub } from "react-icons/si";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
-const formatDate = (isoString) => {
-  const date = new Date(isoString);
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return date.toLocaleDateString("en-US", options);
-};
-
 const ClubDetailsCard = () => {
   const { id } = useParams();
   const { user } = useAuth();
@@ -38,6 +32,7 @@ const ClubDetailsCard = () => {
     status,
     managerEmail,
     createdAt,
+    updatedAt,
     _id,
     clubId,
   } = clubs || {};
@@ -55,7 +50,6 @@ const ClubDetailsCard = () => {
   const { paymentStatus, membar } = memberships || {};
   const isMemberOfThisClub = paymentStatus === "paid" && membar === user?.email;
 
-  const creationDate = formatDate(createdAt);
   const navigate = useNavigate();
   const feeDisplay = membershipFee > 0 ? `৳ ${membershipFee} / Month` : "FREE";
   const feeColor = membershipFee > 0 ? "text-red-700" : "text-green-700";
@@ -199,7 +193,9 @@ const ClubDetailsCard = () => {
                 </span>
               </p>
               <p className="text-sm text-gray-500 mt-1">
-                Established: {creationDate}
+                {/* Established: {createdAt || updatedAt} */}
+                {updatedAt ? "Last Updated : " : "Established: "}
+                {updatedAt || createdAt}
               </p>
             </section>
           </div>

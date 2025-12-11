@@ -7,7 +7,7 @@ import { imageUpload } from "./../../utils/index";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import ErrorPage from "../../pages/ErrorPage";
 
-const AddEventForm = () => {
+const AddClubForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const {
@@ -17,16 +17,26 @@ const AddEventForm = () => {
     reset,
   } = useForm();
 
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const dateOptions = { year: "numeric", month: "long", day: "numeric" };
+    const timeOptions = { hour: "2-digit", minute: "2-digit", hour12: true };
+    return {
+      date: date.toLocaleDateString("en-US", dateOptions),
+      time: date.toLocaleTimeString("en-US", timeOptions),
+    };
+  };
+
   const {
     isPending,
     isError,
     mutateAsync,
     reset: mutationReset,
   } = useMutation({
-    mutationFn: async (payload) => await axiosSecure.post(`/events`, payload),
+    mutationFn: async (payload) => await axiosSecure.post(`/clubs`, payload),
     onSuccess: (data) => {
       console.log(data);
-      toast.success("New Event Added Successful!");
+      toast.success("New Club Added Successful!");
       mutationReset();
     },
     onError: (error) => {
@@ -36,16 +46,19 @@ const AddEventForm = () => {
   });
 
   const onSubmit = async (data) => {
+    const currentIsoDate = new Date().toISOString();
+    const { date, time } = formatDate(currentIsoDate);
+    const createdAt = `${date} at ${time}`;
+
     const {
-      title,
-      clubName,
-      clubId,
-      description,
+      name,
       location,
       category,
-      image,
-      eventDate,
+      membershipFee,
       managerEmail,
+      description,
+      image,
+      managerName,
     } = data;
 
     const imageFile = image[0];
@@ -53,20 +66,17 @@ const AddEventForm = () => {
     try {
       const imageURL = await imageUpload(imageFile);
 
-      const eventData = {
-        title,
-        clubName,
-        clubId: Number(clubId),
+      const clubData = {
+        clubName: name,
+        membershipFee: membershipFee,
         description,
-        eventDate,
-        location,
-        isPaid: "True",
-        eventFee: "Free",
-        createdAt: new Date().toISOString(),
-        image: imageURL,
-        attendees: "Unlimited",
         category,
+        bannerImage: imageURL,
+        location,
+        managerName,
         managerEmail,
+        status: "pending",
+        createdAt,
         manager: {
           image: user?.photoURL,
           name: user?.displayName,
@@ -74,11 +84,11 @@ const AddEventForm = () => {
         },
       };
 
-      await mutateAsync(eventData);
+      await mutateAsync(clubData);
       reset();
     } catch (error) {
-      console.error("Event Submission Error:", error);
-      toast.error("Failed to add Event. Please try again.");
+      console.error("Club Submission Error:", error);
+      toast.error("Failed to add club. Please try again.");
     }
   };
 
@@ -93,101 +103,70 @@ const AddEventForm = () => {
       >
         <div className="flex gap-10">
           <div className="space-y-4 w-full">
-            {/* Event Title + Location */}
+            {/* Club Name + MembarShip Fee */}
             <div className="space-y-1 flex gap-2">
-              {/* Event Title */}
-              <div className="space-y-1 text-lg w-full">
-                <label htmlFor="title" className="block text-gray-600">
-                  Event Title
-                </label>
-
-                <input
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
-                  type="text"
-                  placeholder="Event Title (e.g., Stargazing Workshop)"
-                  {...register("title", { required: true })}
-                />
-
-                {errors.title?.type === "required" && (
-                  <p className="text-red-500 text-base">
-                    Event Title is Required!
-                  </p>
-                )}
-              </div>
-
-              {/* Location */}
-              <div className="space-y-1 text-lg w-full">
-                <label htmlFor="location" className="block text-gray-600 ">
-                  Location
-                </label>
-
-                <input
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
-                  type="text"
-                  placeholder="Location (e.g., Dhaka University Campus Field)"
-                  {...register("location", { required: true })}
-                />
-
-                {errors.location?.type === "required" && (
-                  <p className="text-red-500 text-base">
-                    Location is Required!
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Club Name + Club ID + */}
-            <div className="flex gap-2 w-full">
               {/* Club Name */}
               <div className="space-y-1 text-lg w-full">
-                <label htmlFor="clubName" className="block text-gray-600">
+                <label htmlFor="name" className="block text-gray-600">
                   Club Name
                 </label>
-
                 <input
                   className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
                   type="text"
-                  placeholder="Club Name organizing the event"
-                  {...register("clubName", { required: true })}
+                  placeholder="Club Name"
+                  {...register("name", { required: true })}
                 />
-
-                {errors.clubName?.type === "required" && (
+                {errors.name?.type === "required" && (
                   <p className="text-red-500 text-base">
                     Club Name is Required!
                   </p>
                 )}
               </div>
 
-              {/* Club ID */}
+              {/* MembarShip Fee */}
               <div className="space-y-1 text-lg w-full">
-                <label htmlFor="clubId" className="block text-gray-600">
-                  Club ID
+                <label htmlFor="membershipFee" className="block text-gray-600 ">
+                  Membership Fee
                 </label>
-
                 <input
                   className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
                   type="number"
-                  placeholder="Club ID (e.g., 1001)"
-                  {...register("clubId", {
-                    required: true,
-                    valueAsNumber: true,
-                  })}
+                  placeholder="Membership Fee"
+                  {...register("membershipFee", { required: true })}
                 />
-
-                {errors.clubId?.type === "required" && (
-                  <p className="text-red-500 text-base">Club ID is Required!</p>
+                {errors.membershipFee?.type === "required" && (
+                  <p className="text-red-500 text-base">
+                    Membership Fee is Required!
+                  </p>
                 )}
               </div>
             </div>
 
-            {/* Category +  Event Date */}
+            {/* Location + Category */}
             <div className="flex gap-2 w-full">
-              {/* Event Category */}
+              {/* Location */}
+              <div className="space-y-1 text-lg w-full">
+                <label htmlFor="location" className="block text-gray-600 ">
+                  Location
+                </label>
+                <input
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
+                  type="text"
+                  placeholder="Location"
+                  {...register("location", { required: true })}
+                />
+                {errors.location?.type === "required" && (
+                  <p className="text-red-500 text-base">
+                    Location is Required!
+                  </p>
+                )}
+              </div>
+
+              {/* Club Category */}
               <div className="space-y-1 text-lg w-full">
                 <label htmlFor="category" className="block text-gray-600 ">
                   Category
                 </label>
-
                 <select
                   className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
                   {...register("category", { required: true })}
@@ -211,47 +190,27 @@ const AddEventForm = () => {
                   <option value="Nature / Gardening">Nature & Gardening</option>
                   <option value="Food / Cooking">Food & Cooking</option>
                 </select>
-
                 {errors.category?.type === "required" && (
                   <p className="text-red-500 text-base">
                     Category is Required!
                   </p>
                 )}
               </div>
-
-              {/* Event Date */}
-              <div className="space-y-1 text-lg w-full">
-                <label htmlFor="eventDate" className="block text-gray-600 ">
-                  Event Date & Time
-                </label>
-                <input
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
-                  type="datetime-local"
-                  {...register("eventDate", { required: true })}
-                />
-
-                {errors.eventDate?.type === "required" && (
-                  <p className="text-red-500 text-base">
-                    Event Date is Required!
-                  </p>
-                )}
-              </div>
             </div>
 
-            {/* Manager Name + Manager Email */}
+            {/* Manamer Name + Manager Email */}
             <div className="flex justify-between gap-2 w-full">
               {/* Manager Name */}
               <div className="space-y-1 text-lg w-full">
-                <label htmlFor="managerName" className="block text-gray-600">
+                <label htmlFor="name" className="block text-gray-600">
                   Manager Name
                 </label>
-
                 <input
                   className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
                   type="text"
                   disabled
                   defaultValue={user?.displayName}
-                  {...register("managerName")}
+                  {...register("managerName", { required: true })}
                 />
               </div>
 
@@ -260,34 +219,29 @@ const AddEventForm = () => {
                 <label htmlFor="managerEmail" className="block text-gray-600">
                   Manager Email
                 </label>
-
                 <input
                   className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
                   type="text"
                   disabled
                   defaultValue={user?.email}
-                  {...register("managerEmail")}
+                  {...register("managerEmail", { required: true })}
                 />
               </div>
             </div>
 
-            <div className="flex justify-between gap-2 w-full"></div>
-
-            {/* Event Description */}
+            {/* Club Description */}
             <div className="space-y-1 text-lg w-full">
               <label htmlFor="description" className="block text-gray-600">
                 Description
               </label>
-
               <textarea
-                placeholder="Write Event description here..."
+                placeholder="Write Club description here..."
                 className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900 h-32"
                 {...register("description", { required: true })}
               ></textarea>
-
               {errors.description?.type === "required" && (
                 <p className="text-red-500 text-base">
-                  Event Description is Required!
+                  Club Description is Required!
                 </p>
               )}
             </div>
@@ -303,11 +257,9 @@ const AddEventForm = () => {
                       accept="image/*"
                       {...register("image", { required: true })}
                     />
-
                     <div className="border-gray-200 border rounded font-semibold cursor-pointer p-1 px-3 hover:bg-sky-500">
-                      Upload Event Image
+                      Upload Club Image
                     </div>
-
                     {errors.image?.type === "required" && (
                       <p className="text-red-500 text-base">
                         Image is Required!
@@ -317,12 +269,13 @@ const AddEventForm = () => {
                 </div>
               </div>
             </div>
+
             {/* Submit Button */}
             <button
               type="submit"
               className="w-full cursor-pointer p-2 mt-5 text-center font-medium text-xl text-white transition duration-200 rounded shadow-md bg-sky-700 hover:bg-pink-700"
             >
-              Add Event
+              Add Club
             </button>
           </div>
         </div>
@@ -331,4 +284,4 @@ const AddEventForm = () => {
   );
 };
 
-export default AddEventForm;
+export default AddClubForm;

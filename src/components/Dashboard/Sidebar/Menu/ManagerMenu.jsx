@@ -9,9 +9,10 @@ const ManagerMenu = () => {
     <>
       <MenuItem
         icon={BsFillHouseAddFill}
-        label="Add Event"
-        address="add-event"
+        label="Add Club"
+        address="add-club"
       />
+      
       <MenuItem
         icon={FaCcDinersClub}
         label="My Clubs"
@@ -22,6 +23,12 @@ const ManagerMenu = () => {
         icon={HiUserGroup}
         label="Club Members"
         address="club-members"
+      />
+
+      <MenuItem
+        icon={BsFillHouseAddFill}
+        label="Add Event"
+        address="add-event"
       />
 
       <MenuItem

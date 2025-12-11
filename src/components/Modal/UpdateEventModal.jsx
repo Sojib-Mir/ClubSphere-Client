@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import UpdateEventForm from "../Form/UpdateEventForm";
 
-const UpdateEventModal = ({ setIsEditModalOpen, isOpen }) => {
+const UpdateEventModal = ({ club, setIsEditModalOpen, isOpen }) => {
   return (
     <Dialog
       open={isOpen}
@@ -27,10 +27,10 @@ const UpdateEventModal = ({ setIsEditModalOpen, isOpen }) => {
               as="h3"
               className="text-lg font-medium text-center leading-6 text-gray-900"
             >
-              Update Plant Info
+              Update Club Info
             </DialogTitle>
             <div className="mt-2 w-full">
-              <UpdateEventForm />
+              <UpdateEventForm club={club} />
             </div>
           </DialogPanel>
         </div>

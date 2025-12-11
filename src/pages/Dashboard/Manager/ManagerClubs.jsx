@@ -10,24 +10,13 @@ const ManagerClubs = () => {
   const { user, loading } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  // const { data: manageClubs = [], isLoading } = useQuery({
-  //   queryKey: ["manage-clubs", user?.email],
-  //   enabled: !!user?.email && !loading,
-
-  //   queryFn: async () => {
-  //     const result = await axiosSecure(
-  //       `${import.meta.env.VITE_API_URL}/manage-clubs?email=${user?.email}`
-  //     );
-  //     return result.data;
-  //   },
-  // });
-
-  // console.log(manageClubs);
-
-  const { data: manageClubs = [], isLoading } = useQuery({
+  const {
+    data: manageClubs = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["manage-clubs", user?.email],
     enabled: !!user?.email && !loading,
-
     queryFn: async () => {
       const result = await axiosSecure(
         `${import.meta.env.VITE_API_URL}/manage-clubs?email=${user?.email}`
@@ -49,6 +38,7 @@ const ManagerClubs = () => {
               <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
+                    <th>Found({manageClubs.length})</th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
@@ -79,24 +69,27 @@ const ManagerClubs = () => {
                     >
                       Location
                     </th>
-
-                    <th
-                      scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                    >
-                      Delete
-                    </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
                       Update
                     </th>
+                    <th
+                      scope="col"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                    >
+                      Delete
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {manageClubs.map((club) => (
-                    <ManagerMyClubsDataRow key={club._id} club={club} />
+                    <ManagerMyClubsDataRow
+                      key={club._id}
+                      club={club}
+                      refetch={refetch}
+                    />
                   ))}
                 </tbody>
               </table>
