@@ -67,7 +67,7 @@ const RecentClubsCard = ({ club }) => {
       {/* See Details */}
       <div className="px-2 pb-5 pt-0">
         <Link
-          to={`/clubs/:id`}
+          to={`/clubs/${club._id}`}
           className="btn border-none w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition duration-150"
         >
           See Details
