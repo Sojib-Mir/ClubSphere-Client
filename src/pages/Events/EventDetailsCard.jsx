@@ -46,6 +46,7 @@ const EventDetailsCard = () => {
     image,
     clubName,
     clubId,
+    managerEmail,
     createdAt,
     _id,
   } = events;
@@ -91,6 +92,7 @@ const EventDetailsCard = () => {
         eventId: _id,
         clubId,
         clubName,
+        managerEmail,
         userEmail: user?.email,
         status: "Registered",
         registeredAt: new Date().toLocaleDateString(),

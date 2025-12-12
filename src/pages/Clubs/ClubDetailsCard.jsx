@@ -76,12 +76,15 @@ const ClubDetailsCard = () => {
 
     // membership register info
     const membershipData = {
-      clubId: _id,
+      clubMainId: _id,
+      clubId,
+      managerEmail,
       clubName,
       bannerImage,
       status: clubs?.status,
       paymentStatus: "paid",
-      membar: user?.email,
+      userEmail: user?.email,
+      userName: user?.displayName,
       joinedAt: new Date().toISOString(),
     };
     await axios.post(

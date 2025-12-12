@@ -27,7 +27,12 @@ const Sidebar = () => {
     setActive(!isActive);
   };
 
-  if (isRoleLoading) return <LoadingSpinner />;
+  if (isRoleLoading)
+    return (
+      <div className="ml-15">
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
     <>

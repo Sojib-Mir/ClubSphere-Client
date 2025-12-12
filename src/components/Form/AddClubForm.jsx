@@ -96,12 +96,12 @@ const AddClubForm = () => {
   if (isError) return <ErrorPage />;
 
   return (
-    <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50 min-h-screen px-10">
+    <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50 my-20 md:my-0 md:min-h-screen md:px-10">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="border rounded-xl border-gray-100 w-5/6 p-5"
+        className="border rounded-xl border-gray-200 w-full md:w-5/6 max-w-7xl p-5"
       >
-        <div className="flex gap-10">
+        <div className="w-full">
           <div className="space-y-4 w-full">
             {/* Club Name + MembarShip Fee */}
             <div className="space-y-1 flex gap-2">
@@ -168,7 +168,7 @@ const AddClubForm = () => {
                   Category
                 </label>
                 <select
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
+                  className="w-full px-3 py-3 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
                   {...register("category", { required: true })}
                 >
                   <option selected value="">

@@ -1,5 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import UpdateClubForm from "../Form/UpdateClubForm";
+import { IoIosCloseCircle } from "react-icons/io";
 
 const UpdateClubeModal = ({ club, setIsEditModalOpen, isOpen, refetch }) => {
   const closeModal = () => setIsEditModalOpen(false);
@@ -21,9 +22,9 @@ const UpdateClubeModal = ({ club, setIsEditModalOpen, isOpen, refetch }) => {
               <div className="flex justify-end">
                 <button
                   onClick={closeModal}
-                  className="bg-red-100 px-3 py-1 rounded-md text-red-500 cursor-pointer"
+                  className="bg-red-100 p-1 text-2xl rounded-full text-red-500 cursor-pointer"
                 >
-                  X
+                  <IoIosCloseCircle />
                 </button>
               </div>
               <DialogTitle
