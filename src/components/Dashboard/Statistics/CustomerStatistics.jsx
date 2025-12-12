@@ -77,7 +77,7 @@ const CustomerStatistics = () => {
           {/* Total Registered Events */}
           <Link
             to={"/dashboard/my-events"}
-            className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100"
+            className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-600 shadow-md border border-gray-100"
           >
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-blue-600 to-blue-400 text-white shadow-blue-500/40`}
