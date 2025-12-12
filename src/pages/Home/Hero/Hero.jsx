@@ -53,7 +53,7 @@ const Banner = () => {
 
       <Swiper
         modules={[Autoplay, Navigation, Pagination]}
-        autoplay={{ delay: 20000, disableOnInteraction: false }}
+        autoplay={{ delay: 2000, disableOnInteraction: false }}
         navigation={{ nextEl: ".custom-next", prevEl: ".custom-prev" }}
         pagination={{ clickable: true }}
         loop={true}
