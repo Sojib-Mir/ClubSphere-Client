@@ -37,7 +37,7 @@ const ManageEvents = () => {
               <table className="min-w-full leading-normal">
                 <thead>
                   <tr>
-                    <th className="px-5 py-3 bg-sky-20 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
+                    <th className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
                       Found({manageEvents.length})
                     </th>
                     <th
