@@ -17,12 +17,18 @@ const Events = () => {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold text-center py-5">
-        All <span className="text-pink-500">Events</span>{" "}
-      </h1>
+      <div className="text-center mb-5">
+        <h1 className="text-4xl md:text-6xl font-bold text-center pt-5">
+          Amazing <span className="text-pink-500">Events</span>{" "}
+        </h1>
+
+        <p className="dark:text-gray-400 text-black/60 mt-2 text-xl md:text-2xl font-medium">
+          Join exciting events happening in your favorite clubs.
+        </p>
+      </div>
 
       {/* search bar + filter by category*/}
-      <div className="flex flex-row justify-between items-center py-4 px-4 mb-px">
+      <div className="flex justify-end items-center py-4 px-4 mb-px">
         {/* Search Bar */}
         <div className="w-full md:w-3/12">
           <div className="relative">
@@ -45,23 +51,9 @@ const Events = () => {
             </svg>
           </div>
         </div>
-
-        {/* filter by category */}
-        <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-4 w-5/12 md:w-auto ms-2">
-          {/* dropdown */}
-          <select
-            className="w-full sm:w-40 py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-sky-300 focus:border-sky-300 bg-white 
-                     dark:bg-[#1D232A] dark:text-white dark:border-gray-700"
-          >
-            <option value="">Filter by Category</option>
-            <option value="photography">Photography</option>
-            <option value="sports">Sports</option>
-            <option value="tech">Tech</option>
-          </select>
-        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-2 pt-2 pb-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2 pb-5">
         {events.map((event) => (
           <EventCard key={event._id} event={event} />
         ))}

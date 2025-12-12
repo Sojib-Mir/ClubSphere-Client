@@ -5,7 +5,6 @@ import axios from "axios";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
 const Clubs = () => {
-  
   const { data: clubs = [], isLoading } = useQuery({
     queryKey: ["clubs"],
     queryFn: async () => {
@@ -20,8 +19,8 @@ const Clubs = () => {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold text-center py-5">
-        All <span className="text-pink-500">Clubs</span>{" "}
+      <h1 className="text-4xl md:text-6xl font-bold text-center pt-8 py-10">
+        Explore <span className="text-pink-500"> All </span>Clubs
       </h1>
 
       <div className="flex flex-row justify-between items-center py-4 px-4 mb-px">

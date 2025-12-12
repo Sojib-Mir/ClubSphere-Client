@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 
 const ClubCard = ({ club }) => {
@@ -6,7 +5,7 @@ const ClubCard = ({ club }) => {
     club.membershipFee === 0 ? "Free" : `BDT ${club.membershipFee}/month`;
 
   return (
-    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700">
+    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700 grow flex flex-col">
       {/* image + category */}
       <div className="relative">
         <img
@@ -21,15 +20,15 @@ const ClubCard = ({ club }) => {
       </div>
 
       {/* card details */}
-      <div className="p-2">
+      <div className="p-2 grow flex flex-col">
         <h2 className="font-bold text-2xl text-gray-900 mb-2 truncate">
           {club.clubName}
         </h2>
 
         {/* Locaiton */}
-        <p className="text-gray-600 text-sm flex items-center mb-1.5">
+        <div className="text-gray-600 text-sm flex items-center mb-1.5 truncate">
           <svg
-            className="w-4 h-4 mr-1 text-gray-500"
+            className="w-5 h-5 mr-1 text-red-500 shrink-0"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -40,17 +39,11 @@ const ClubCard = ({ club }) => {
             />
           </svg>
           {club.location}
-        </p>
+        </div>
 
-        {/* description */}
-        <p className="text-gray-700 text-base mb-1.5 overflow-hidden line-clamp-2">
-          {club.description}
-        </p>
-
-        {/* fee */}
-        <span className="text-gray-600 flex items-center">
+        <span className="text-gray-600 flex items-center mt-auto">
           <svg
-            className="w-4 h-4 mr-1 text-green-600"
+            className="w-5 h-5 mr-1 text-green-600"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -70,7 +63,7 @@ const ClubCard = ({ club }) => {
           to={`/clubs/${club._id}`}
           className="btn border-none w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition duration-150"
         >
-          See Details
+          View Club
         </Link>
       </div>
     </div>

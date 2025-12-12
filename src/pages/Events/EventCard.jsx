@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 
 const EventCard = ({ event }) => {
@@ -27,11 +26,10 @@ const EventCard = ({ event }) => {
     return `${datePart.split(",")[0]} | ${timePart.replace(",", "")}`;
   };
 
-  const { _id, eventDate, title, description, image, location, clubName } =
-    event || {};
+  const { _id, eventDate, title, image, location, clubName } = event || {};
 
   return (
-    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700">
+    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700 flex flex-col">
       {/* Image */}
       <div className="relative">
         <img
@@ -45,51 +43,50 @@ const EventCard = ({ event }) => {
         </span>
       </div>
 
-      {/* body */}
-      <div className="p-2">
-        {/* event date */}
-        <div className="text-sm font-semibold text-blue-600 mb-1.5">
-          <span className="text-[16px]">Start Time:</span>{" "}
-          <span className="bg-blue-100 px-px rounded-md">
-            {formatToBDT(eventDate)} BDT
-          </span>
+      <div className="p-2 grow flex flex-col justify-between">
+        {/* Top Content (Date, Title, Location) */}
+        <div>
+          {/* event date */}
+          <div className="text-sm font-semibold text-blue-600 mb-1.5">
+            <span className="text-[16px]">Start Time:</span>{" "}
+            <span className="bg-blue-100 px-px rounded-md">
+              {formatToBDT(eventDate)} BDT
+            </span>
+            <span className="bg-sky-500/30 rounded px-1 text-pink-500 ml-10">
+              Free Event
+            </span>
+          </div>
+
+          {/* event name */}
+          <h2 className="font-bold text-2xl text-gray-900 mb-1.5 truncate">
+            {title}
+          </h2>
+
+          {/* location */}
+          <div className="text-gray-600 text-sm flex items-center mb-1.5 truncate">
+            <svg
+              className="w-5 h-5 mr-1 text-red-500 shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {location}
+          </div>
         </div>
-
-        {/* event name */}
-        <h2 className="font-bold text-2xl text-gray-900 mb-1.5 truncate">
-          {title}
-        </h2>
-
-        {/* location */}
-        <p className="text-gray-600 text-sm flex items-center mb-1.5">
-          <svg
-            className="w-5 h-5 mr-1 text-red-500"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-              clipRule="evenodd"
-            />
-          </svg>
-          {location}
-        </p>
-
-        {/* description */}
-        <p className="text-gray-700 text-base mb-1.5 overflow-hidden line-clamp-2">
-          {description}
-        </p>
       </div>
 
-      {/* See Details */}
       <div className="px-2 pb-5 pt-0">
         <Link
           to={`/events/${_id}`}
           event={event}
           className="btn border-none w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition duration-150"
         >
-          See Details
+          View Details
         </Link>
       </div>
     </div>
