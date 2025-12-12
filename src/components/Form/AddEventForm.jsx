@@ -86,7 +86,7 @@ const AddEventForm = () => {
   if (isError) return <ErrorPage />;
 
   return (
-    <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50 my-20 md:my-0 md:min-h-screen md:px-10">
+    <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50 my-2 md:my-0 md:min-h-screen md:px-10">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="border rounded-xl border-gray-200 w-full md:w-5/6 max-w-7xl p-5"
