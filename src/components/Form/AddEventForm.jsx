@@ -3,19 +3,27 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
-import { imageUpload } from "./../../utils/index";
+import { formatDate, imageUpload, isFutureDate } from "./../../utils/index";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import ErrorPage from "../../pages/ErrorPage";
 
 const AddEventForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm();
+
+  const watchedEventDate = watch("eventDate");
+
+  const isSelectedDateUpcoming = watchedEventDate
+    ? isFutureDate(watchedEventDate)
+    : false;
 
   const {
     isPending,
@@ -36,6 +44,10 @@ const AddEventForm = () => {
   });
 
   const onSubmit = async (data) => {
+    const currentIsoDate = new Date().toISOString();
+    const { date, time } = formatDate(currentIsoDate);
+    const createdAt = `${date} at ${time}`;
+
     const {
       title,
       clubName,
@@ -62,7 +74,7 @@ const AddEventForm = () => {
         location,
         isPaid: "True",
         eventFee: "Free",
-        createdAt: new Date().toISOString(),
+        createdAt,
         image: imageURL,
         attendees: "Unlimited",
         category,
@@ -77,8 +89,7 @@ const AddEventForm = () => {
       await mutateAsync(eventData);
       reset();
     } catch (error) {
-      console.error("Event Submission Error:", error);
-      toast.error("Failed to add Event. Please try again.");
+      toast.error("Failed to add Event. Please try again.", error);
     }
   };
 
@@ -114,7 +125,6 @@ const AddEventForm = () => {
                   </p>
                 )}
               </div>
-
               {/* Location */}
               <div className="space-y-1 text-lg w-full">
                 <label htmlFor="location" className="block text-gray-600 ">
@@ -135,7 +145,6 @@ const AddEventForm = () => {
                 )}
               </div>
             </div>
-
             {/* Club Name + Club ID + */}
             <div className="flex gap-2 w-full">
               {/* Club Name */}
@@ -157,7 +166,6 @@ const AddEventForm = () => {
                   </p>
                 )}
               </div>
-
               {/* Club ID */}
               <div className="space-y-1 text-lg w-full">
                 <label htmlFor="clubId" className="block text-gray-600">
@@ -180,7 +188,7 @@ const AddEventForm = () => {
               </div>
             </div>
 
-            {/* Category +  Event Date */}
+            {/* Category + Event Date */}
             <div className="flex flex-col md:flex-row gap-2 w-full">
               {/* Event Category */}
               <div className="space-y-1 text-lg w-full flex-1">
@@ -203,7 +211,7 @@ const AddEventForm = () => {
                   <option value="Music">Music & Performance</option>
                   <option value="Books / Reading">Books & Reading</option>
                   <option value="Gaming">Gaming</option>
-                  <option value="Science">Science & Research</option>
+                  <option value="Science">Science & Research</option>{" "}
                   <option value="Arts & Culture">Arts & Culture</option>
                   <option value="Career">Career & Business</option>
                   <option value="Finance">Finance & Investing</option>
@@ -219,20 +227,36 @@ const AddEventForm = () => {
                 )}
               </div>
 
-              {/* Event Date */}
+              {/* Event Date*/}
               <div className="space-y-1 text-lg w-full flex-1">
-                <label htmlFor="eventDate" className="block text-gray-600 ">
-                  Event Date & Time
+                <label
+                  htmlFor="eventDate"
+                  className="block text-gray-600 `flex` items-center gap-2"
+                >
+                  Event Date & Time{" "}
+                  {isSelectedDateUpcoming && (
+                    <span className="text-xs bg-sky-500 text-white font-semibold px-1 py-0.5 rounded-full uppercase">
+                      Upcoming
+                    </span>
+                  )}
                 </label>
                 <input
                   className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
                   type="datetime-local"
-                  {...register("eventDate", { required: true })}
+                  {...register("eventDate", {
+                    required: "Event Date is Required!",
+                    validate: (value) => {
+                      if (!isFutureDate(value)) {
+                        return "Event date must be a future date and time.";
+                      }
+                      return true;
+                    },
+                  })}
                 />
 
-                {errors.eventDate?.type === "required" && (
+                {errors.eventDate && (
                   <p className="text-red-500 text-base">
-                    Event Date is Required!
+                    {errors.eventDate.message}
                   </p>
                 )}
               </div>
@@ -270,7 +294,6 @@ const AddEventForm = () => {
                 />
               </div>
             </div>
-
             <div className="flex justify-between gap-2 w-full"></div>
 
             {/* Event Description */}
@@ -291,7 +314,6 @@ const AddEventForm = () => {
                 </p>
               )}
             </div>
-
             {/* Image */}
             <div className="w-full m-auto rounded-lg grow">
               <div className="file_upload px-5 py-3 relative border-4 border-dotted border-sky-300 rounded-lg">

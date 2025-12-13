@@ -6,7 +6,7 @@ const RecentClubsCard = ({ club }) => {
     club.membershipFee === 0 ? "Free" : `BDT ${club.membershipFee}/month`;
 
   return (
-    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white">
+    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border dark:border-black/50 border-gray-200">
       {/* image + category */}
       <div className="relative">
         <img

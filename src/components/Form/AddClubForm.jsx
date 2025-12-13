@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
-import { imageUpload } from "./../../utils/index";
+import { formatDate, imageUpload } from "./../../utils/index";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import ErrorPage from "../../pages/ErrorPage";
 
@@ -16,16 +16,6 @@ const AddClubForm = () => {
     formState: { errors },
     reset,
   } = useForm();
-
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    const dateOptions = { year: "numeric", month: "long", day: "numeric" };
-    const timeOptions = { hour: "2-digit", minute: "2-digit", hour12: true };
-    return {
-      date: date.toLocaleDateString("en-US", dateOptions),
-      time: date.toLocaleTimeString("en-US", timeOptions),
-    };
-  };
 
   const {
     isPending,
@@ -75,7 +65,7 @@ const AddClubForm = () => {
         location,
         managerName,
         managerEmail,
-        status: "pending",
+        status: "Pending",
         createdAt,
         manager: {
           image: user?.photoURL,

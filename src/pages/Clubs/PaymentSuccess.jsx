@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
 import { RiWechatPayFill } from "react-icons/ri";
 
-import LoadingSpinner from "../../components/Shared/LoadingSpinner";
-
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");

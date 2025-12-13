@@ -8,9 +8,8 @@ const AdminTransactionsHistory = ({ payment }) => {
       time: date.toLocaleTimeString("en-US", timeOptions),
     };
   };
-  const { membershipFee, category, clubName, status, clubId, _id } =
-    payment.club;
-  const { transactionId, paymentDate, customer } = payment;
+  const { membershipFee, category, clubName, clubId, _id } = payment.club;
+  const { transactionId, paymentDate, customer, status } = payment;
   const { date } = formatDate(paymentDate);
 
   return (

@@ -53,6 +53,7 @@ const ManagerMyClubsDataRow = ({ club, refetch }) => {
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-[12px]">
         Clib ID : <span className="text-sm">{clubId}</span>
       </td>
+      
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <div className="flex items-center">
           <div className="shrink-0">

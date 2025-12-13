@@ -40,18 +40,21 @@ const ManageEvents = () => {
                     <th className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal">
                       Found({manageEvents.length})
                     </th>
-                    <th
-                      scope="col"
-                      className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
-                    >
-                      Image
-                    </th>
+                   
                     <th
                       scope="col"
                       className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
                       Event Name
                     </th>
+                  
+                    <th
+                      scope="col"
+                      className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                    >
+                      Event Date
+                    </th>
+
                     <th
                       scope="col"
                       className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"

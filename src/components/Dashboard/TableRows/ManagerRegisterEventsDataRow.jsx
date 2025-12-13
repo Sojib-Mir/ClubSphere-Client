@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 const ManagerRegisterEventsDataRow = ({ register, refetch }) => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  
   const { eventName, userEmail, clubId, _id, registeredAt, status } =
     register || {};
 

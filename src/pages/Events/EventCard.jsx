@@ -1,32 +1,12 @@
 import { Link } from "react-router";
+import { formatToBDT, isFutureDate } from "../../utils";
 
 const EventCard = ({ event }) => {
-  const formatToBDT = (dateString, includeTime = true) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    const options = {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      timeZone: "Asia/Dhaka",
-    };
-    if (includeTime) {
-      options.hour = "2-digit";
-      options.minute = "2-digit";
-    }
-    const datePart = date.toLocaleDateString("en-GB", options);
-    const timePart = includeTime
-      ? date.toLocaleTimeString("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-          timeZone: "Asia/Dhaka",
-        })
-      : "";
-    return `${datePart.split(",")[0]} | ${timePart.replace(",", "")}`;
-  };
-
   const { _id, eventDate, title, image, location, clubName } = event || {};
+  const isUpcoming = isFutureDate(eventDate);
+  const isPast =
+    !isUpcoming && new Date(eventDate).getTime() < new Date().getTime();
+  const isDisabled = true;
 
   return (
     <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700 flex flex-col">
@@ -38,23 +18,43 @@ const EventCard = ({ event }) => {
           alt={title}
         />
         {/* Club Name */}
-        <span className="absolute bottom-1 right-8 px-3 py-1 text-sm font-semibold text-white bg-black/50 rounded-md shadow-md">
-          Hosted by: {clubName}
-        </span>
+        <div className="flex justify-between">
+          <span className="absolute bottom-1 right-1 px-3 py-1 text-sm font-semibold text-white bg-black/50 rounded-md shadow-md">
+            Hosted by: {clubName}
+          </span>
+          <span className="bg-pink-500 text-[12px] text-white ml-2 absolute bottom-1 px-3 py-1 text-sm font-semibold rounded-md shadow-md">
+            Free Event
+          </span>
+        </div>
       </div>
 
       <div className="p-2 grow flex flex-col justify-between">
         {/* Top Content (Date, Title, Location) */}
         <div>
           {/* event date */}
-          <div className="text-sm font-semibold text-blue-600 mb-1.5">
-            <span className="text-[16px]">Start Time:</span>{" "}
-            <span className="bg-blue-100 px-px rounded-md">
-              {formatToBDT(eventDate)} BDT
-            </span>
-            <span className="bg-sky-500/30 rounded px-1 text-pink-500 ml-10">
-              Free Event
-            </span>
+          <div className="text-[14px] font-semibold text-blue-600 mb-1.5">
+            {isUpcoming && (
+              <>
+                <span className="text-[12px] bg-green-600 text-white font-bold px-2 py-1 rounded-full uppercase">
+                  Upcoming
+                </span>{" "}
+                Event Start Time:{" "}
+                <span className="bg-blue-100 px-px rounded-md">
+                  {formatToBDT(eventDate)} BDT
+                </span>
+              </>
+            )}
+            {isPast && (
+              <>
+                <span className="text-[12px] bg-red-500 text-white font-bold px-2 py-1 rounded-full uppercase">
+                  Past
+                </span>{" "}
+                <span className="text-red-500">Event Finished :</span>{" "}
+                <span className="bg-blue-100 px-px text-red-500 rounded-md">
+                  {formatToBDT(eventDate)} BDT
+                </span>
+              </>
+            )}
           </div>
 
           {/* event name */}
@@ -80,14 +80,39 @@ const EventCard = ({ event }) => {
         </div>
       </div>
 
+      {/* Button */}
       <div className="px-2 pb-5 pt-0">
-        <Link
+        {isUpcoming && (
+          <>
+            <Link
+              to={`/events/${_id}`}
+              event={event}
+              className="btn border-none w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition duration-150"
+            >
+              View Details
+            </Link>
+          </>
+        )}
+        {isPast && (
+          <>
+            <Link
+              disabled={isDisabled}
+              to={`/events/${_id}`}
+              event={event}
+              className="btn border-none w-full bg-gray-400 text-white font-bold py-2 rounded-lg transition duration-150"
+            >
+              View Details
+            </Link>
+          </>
+        )}
+
+        {/* <Link
           to={`/events/${_id}`}
           event={event}
           className="btn border-none w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition duration-150"
         >
           View Details
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

@@ -9,16 +9,9 @@ const CustomerPaymentHistory = ({ payment }) => {
     };
   };
 
-  const {
-    membershipFee,
-    category,
-    clubName,
-    status,
-    clubId,
-    _id,
-  } = payment.club;
+  const { membershipFee, category, clubName, clubId, _id } = payment.club;
 
-  const { transactionId, paymentDate } = payment;
+  const { transactionId, paymentDate, status } = payment;
 
   const { date } = formatDate(paymentDate);
 
@@ -63,19 +56,6 @@ const CustomerPaymentHistory = ({ payment }) => {
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
         <p className=" ">{date}</p>
       </td>
-
-      {/* Action (Cancel/Delete Button)
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-red-900 leading-tight"
-        >
-          <span className="absolute cursor-pointer inset-0 bg-red-200 opacity-50 rounded-full"></span>
-          <span className="relative cursor-pointer">Cancel</span>
-        </button>
-
-        <DeleteModal isOpen={isOpen} closeModal={closeModal} />
-      </td> */}
     </tr>
   );
 };

@@ -1,5 +1,5 @@
-import { FaUserAlt, FaDollarSign } from "react-icons/fa";
-import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
+import { FaUserAlt, FaCcDinersClub } from "react-icons/fa";
+import { MdEventRepeat } from "react-icons/md";
 import { Link } from "react-router";
 import UseTitle from "../../../hooks/useTitle";
 import useAuth from "../../../hooks/useAuth";
@@ -80,7 +80,7 @@ const ManagerStatistics = () => {
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-orange-600 to-orange-400 text-white shadow-orange-500/40`}
             >
-              <FaDollarSign className="w-6 h-6 text-white" />
+              <FaCcDinersClub className="w-6 h-6 text-white" />
             </div>
             <div className="p-4 text-right">
               <p className="block antialiased font-sans text-3xl font-semibold leading-normal text-blue-gray-600">
@@ -107,7 +107,7 @@ const ManagerStatistics = () => {
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-blue-600 to-blue-400 text-white shadow-blue-500/40`}
             >
-              <BsFillCartPlusFill className="w-6 h-6 text-white" />
+              <MdEventRepeat className="w-6 h-6 text-white" />
             </div>
             <div className="p-4 text-right">
               <p className="block antialiased font-sans text-3xl font-semibold leading-normal text-blue-gray-600">
@@ -134,7 +134,7 @@ const ManagerStatistics = () => {
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
             >
-              <BsFillHouseDoorFill className="w-6 h-6 text-white" />
+              <FaUserAlt className="w-6 h-6 text-white" />
             </div>
             <div className="p-4 text-right">
               <p className="block antialiased font-sans text-3xl font-semibold leading-normal  text-blue-gray-600">

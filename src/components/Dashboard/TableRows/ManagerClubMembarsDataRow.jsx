@@ -2,11 +2,15 @@ import LoadingSpinner from "../../Shared/LoadingSpinner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { dateBDFormet } from "../../../utils";
 
 const ManagerClubMembarsDataRow = ({ membar, refetch }) => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  const { clubName, userName, userEmail, clubId, joinedAt, _id } = membar || {};
+  const { clubName, userName, userEmail, clubId, _id } = membar || {};
+
+  const eventDateISO = membar.joinedAt;
+  const formattedDate = dateBDFormet(eventDateISO);
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: async (id) => {
@@ -63,7 +67,7 @@ const ManagerClubMembarsDataRow = ({ membar, refetch }) => {
       </td>
 
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 ">{joinedAt}</p>
+        <p className="text-gray-900 ">{formattedDate}</p>
       </td>
 
       {/* Delete */}

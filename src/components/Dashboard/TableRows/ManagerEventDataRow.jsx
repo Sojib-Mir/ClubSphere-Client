@@ -4,12 +4,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import UpdateEventModal from "../../Modal/UpdateEventModal";
+import { dateBDFormet } from "../../../utils";
 
 const ManagerEventDataRow = ({ event, refetch }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  const { image, title, category, location, clubId, _id } = event || {};
+
+  const { title, category, location, clubId, _id } = event || {};
+
+  const eventDateISO = event.eventDate;
+  const formattedDate = dateBDFormet(eventDateISO);
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: async (id) => {
@@ -52,22 +57,13 @@ const ManagerEventDataRow = ({ event, refetch }) => {
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-[12px]">
         Club ID : <span className="text-sm">{clubId}</span>
       </td>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <div className="flex items-center">
-          <div className="shrink-0">
-            <div className="block relative">
-              <img
-                alt={title}
-                src={image}
-                className="mx-auto object-cover rounded h-10 w-15 "
-              />
-            </div>
-          </div>
-        </div>
-      </td>
 
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 ">{title}</p>
+      </td>
+
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <p className="text-gray-900 ">{formattedDate}</p>
       </td>
 
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -81,6 +77,7 @@ const ManagerEventDataRow = ({ event, refetch }) => {
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 ">{location}</p>
       </td>
+
       {/* Update */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <span
