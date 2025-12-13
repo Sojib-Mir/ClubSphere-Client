@@ -97,22 +97,12 @@ const EventCard = ({ event }) => {
           <>
             <Link
               disabled={isDisabled}
-              to={`/events/${_id}`}
-              event={event}
-              className="btn border-none w-full bg-gray-400 text-white font-bold py-2 rounded-lg transition duration-150"
+              className="btn border-none w-full bg-gray-400 text-red-500 font-bold py-2 rounded-lg transition duration-150"
             >
-              View Details
+              Event Finished
             </Link>
           </>
         )}
-
-        {/* <Link
-          to={`/events/${_id}`}
-          event={event}
-          className="btn border-none w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg transition duration-150"
-        >
-          View Details
-        </Link> */}
       </div>
     </div>
   );
