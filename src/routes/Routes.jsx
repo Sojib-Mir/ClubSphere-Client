@@ -27,6 +27,7 @@ import PaymentSuccess from "../pages/Clubs/PaymentSuccess";
 import MyAllClubs from "./../pages/Dashboard/Customer/MyAllClubs";
 import ManagerClubs from "../pages/Dashboard/Manager/ManagerClubs";
 import AddClub from "../pages/Dashboard/Manager/AddClub";
+import ManagerRequests from "../pages/Dashboard/Admin/ManagerRequests";
 
 export const router = createBrowserRouter([
   {
@@ -134,6 +135,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ManageUsers />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "manager-requests",
+        element: (
+          <PrivateRoute>
+            <ManagerRequests />
           </PrivateRoute>
         ),
       },

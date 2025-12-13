@@ -27,9 +27,9 @@ const RecentClubsCard = ({ club }) => {
         </h2>
 
         {/* Locaiton */}
-        <p className="text-gray-600 text-sm flex items-center mb-1.5">
+        <p className="text-gray-600 text-sm flex items-center mb-1.5 truncate">
           <svg
-            className="w-4 h-4 mr-1 text-gray-500"
+            className="w-6 h-6 mr-1 text-red-500"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -42,12 +42,7 @@ const RecentClubsCard = ({ club }) => {
           {club.location}
         </p>
 
-        {/* description */}
-        <p className="text-gray-700 text-base mb-1.5 overflow-hidden line-clamp-2">
-          {club.description}
-        </p>
-
-        {/* fee */}
+        {/* Fee */}
         <span className="text-gray-600 flex items-center">
           <svg
             className="w-4 h-4 mr-1 text-green-600"

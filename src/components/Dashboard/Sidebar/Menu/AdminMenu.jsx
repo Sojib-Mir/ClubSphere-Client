@@ -8,6 +8,8 @@ const AdminMenu = () => {
     <>
       <MenuItem icon={FaUserCog} label="Manage Users" address="manage-users" />
 
+      <MenuItem icon={FaUserCog} label="Manager Requests" address="manager-requests" />
+
       <MenuItem
         icon={HiUserGroup}
         label="Manage Clubs"
