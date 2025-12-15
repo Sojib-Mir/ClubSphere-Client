@@ -1,18 +1,8 @@
+import { formatDate } from "../../../utils";
+
 const CustomerPaymentHistory = ({ payment }) => {
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    const dateOptions = { year: "numeric", month: "long", day: "numeric" };
-    const timeOptions = { hour: "2-digit", minute: "2-digit", hour12: true };
-    return {
-      date: date.toLocaleDateString("en-US", dateOptions),
-      time: date.toLocaleTimeString("en-US", timeOptions),
-    };
-  };
-
   const { membershipFee, category, clubName, clubId, _id } = payment.club;
-
   const { transactionId, paymentDate, status } = payment;
-
   const { date } = formatDate(paymentDate);
 
   return (
@@ -21,13 +11,15 @@ const CustomerPaymentHistory = ({ payment }) => {
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
         <p className="text-gray-900">{clubName}</p>
         <p className="text-gray-900 text-[10px]">
-          Club Id : <span className="text-[10px]"> {_id} </span>
+          Club Id : <span className="text-[10px] text-gray-900"> {_id} </span>
         </p>
       </td>
 
       {/* Club Id */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-        <p className=" bg-pink-500/20 text-center py-px rounded">{clubId}</p>
+        <p className=" bg-pink-500/20 text-center py-px rounded text-gray-900">
+          {clubId}
+        </p>
       </td>
 
       {/* Category */}
@@ -49,12 +41,12 @@ const CustomerPaymentHistory = ({ payment }) => {
 
       {/* transactionId */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-        <p className=" ">{transactionId}</p>
+        <p className="text-gray-900">{transactionId}</p>
       </td>
 
       {/* paymentDate */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-        <p className=" ">{date}</p>
+        <p className="text-gray-900">{date}</p>
       </td>
     </tr>
   );

@@ -51,7 +51,11 @@ const EventDetailsCard = () => {
     _id,
   } = events;
 
-  const { data: registerEvent = {}, isLoading: registerLoading } = useQuery({
+  const {
+    data: registerEvent = {},
+    isLoading: registerLoading,
+    refetch: refetchRegistration,
+  } = useQuery({
     queryKey: ["register-event", id],
     queryFn: async () => {
       const result = await axios(
@@ -65,7 +69,7 @@ const EventDetailsCard = () => {
 
   const { status, userEmail } = registerEvent || {};
   const isRegisterOfThisEvent =
-    status === "registered" && userEmail === user?.email;
+    status === "Registered" && userEmail === user?.email;
 
   const { date, time } = formatDate(eventDate);
   const { date: creationDate } = formatDate(createdAt);
@@ -77,7 +81,8 @@ const EventDetailsCard = () => {
       await axiosSecure.post(`/event-register`, payload),
     onSuccess: (data) => {
       console.log(data);
-      toast.success("Event Register Successful!");
+      refetchRegistration();
+      toast.success(`${title} Register Successful!`);
     },
     onError: (error) => {
       toast.error(error);
@@ -92,16 +97,16 @@ const EventDetailsCard = () => {
         eventId: _id,
         clubId,
         clubName,
-        managerEmail,
+        managerEmail: managerEmail,
         userEmail: user?.email,
         status: "Registered",
         registeredAt: new Date().toLocaleDateString(),
       };
 
       await mutateAsync(eventRegisterInfo);
-      navigate("/dashboard/my-events");
     } catch (error) {
       console.log(error.message);
+      toast.error("Bad Request", error.message);
     }
   };
 
@@ -222,7 +227,7 @@ const EventDetailsCard = () => {
               {/* Registration Button */}
               <button
                 onClick={handleRegisterEvent}
-                disabled={isRegisterOfThisEvent}
+                disabled={isRegisterOfThisEvent || isPending}
                 className={`w-full py-3 font-semibold text-white rounded-lg transition duration-300 shadow-md text-xl ${
                   isRegisterOfThisEvent
                     ? "bg-gray-400 cursor-not-allowed shadow-none"

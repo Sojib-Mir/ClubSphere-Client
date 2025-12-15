@@ -10,11 +10,13 @@ const UserDataRow = ({ user, refetch }) => {
   return (
     <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="">{name}</p>
+        <p className="text-gray-900">{name}</p>
       </td>
+     
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 ">{email}</p>
       </td>
+     
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 ">{role}</p>
       </td>
@@ -30,6 +32,7 @@ const UserDataRow = ({ user, refetch }) => {
           ></span>
           <span className="relative">Update Role</span>
         </span>
+        
         {/* Modal */}
         <UpdateUserRoleModal
           isOpen={isOpen}

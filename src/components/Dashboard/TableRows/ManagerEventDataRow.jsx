@@ -54,8 +54,8 @@ const ManagerEventDataRow = ({ event, refetch }) => {
 
   return (
     <tr>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-[12px]">
-        Club ID : <span className="text-sm">{clubId}</span>
+      <td className="px-5 py-5 border-b text-gray-900 border-gray-200 bg-white text-[12px]">
+        Club ID : <span className="text-sm text-gray-900">{clubId}</span>
       </td>
 
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

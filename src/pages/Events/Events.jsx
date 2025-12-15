@@ -1,19 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import EventCard from "./EventCard";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
 const Events = () => {
-  const { data: events = [], isLoading } = useQuery({
-    queryKey: ["events"],
+  const [search, setSearchTerm] = useState("");
+
+  const { data: events = [], isFetching } = useQuery({
+    queryKey: ["events", search],
     queryFn: async () => {
-      const result = await axios(`${import.meta.env.VITE_API_URL}/events`);
+      const result = await axios(
+        `${import.meta.env.VITE_API_URL}/events?&search=${search}`
+      );
       return result.data;
     },
   });
 
-  if (isLoading) return <LoadingSpinner />;
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <div>
@@ -34,6 +40,8 @@ const Events = () => {
           <div className="relative">
             <input
               type="text"
+              onChange={handleSearchChange}
+              value={search}
               placeholder="Search by events name..."
               className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-sky-300 focus:border-sky-300 transition duration-150 shadow-sm"
             />
@@ -53,10 +61,19 @@ const Events = () => {
         </div>
       </div>
 
+      {isFetching && events.length > 0 && (
+        <div className="text-center ">
+          <LoadingSpinner />
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2 pb-5">
-        {events.map((event) => (
-          <EventCard key={event._id} event={event} />
-        ))}
+        {events.length > 0 ? (
+          events.map((event) => <EventCard key={event._id} event={event} />)
+        ) : (
+          <p className="col-span-full text-center text-3xl text-red-500 mt-20">
+            No events found matching your criteria.
+          </p>
+        )}
       </div>
     </div>
   );

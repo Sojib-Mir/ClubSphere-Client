@@ -71,33 +71,33 @@ const MyAllEvents = () => {
                     <tr>
                       <th
                         scope="col"
-                        className="px-5 py-3 bg-white border-b border-gray-200 text-gray-800 text-sm uppercase font-normal text-left"
+                        className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-semibold"
                       >
                         Event Name
                       </th>
                       <th
                         scope="col"
-                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-sm uppercase font-normal text-center"
+                        className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-semibold"
                       >
                         club Id
                       </th>
 
                       <th
                         scope="col"
-                        className="px-5 py-3 bg-white border-b border-gray-200 text-gray-800  text-center text-sm uppercase font-normal"
+                        className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-semibold"
                       >
                         Status
                       </th>
 
                       <th
                         scope="col"
-                        className="px-5 py-3 bg-white border-b border-gray-200 text-gray-800  text-center text-sm uppercase font-normal"
+                        className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-semibold"
                       >
                         Register Id
                       </th>
                       <th
                         scope="col"
-                        className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                        className="px-5 py-3 bg-sky-200 border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-semibold"
                       >
                         Join Date
                       </th>

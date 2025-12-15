@@ -9,8 +9,15 @@ const ManagerMyClubsDataRow = ({ club, refetch }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  const { bannerImage, clubName, category, membershipFee, location, clubId } =
-    club || {};
+  const {
+    bannerImage,
+    clubName,
+    category,
+    membershipFee,
+    location,
+    clubId,
+    status,
+  } = club || {};
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: async (id) => {
@@ -50,10 +57,10 @@ const ManagerMyClubsDataRow = ({ club, refetch }) => {
 
   return (
     <tr>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-[12px]">
-        Clib ID : <span className="text-sm">{clubId}</span>
+      <td className="px-5 py-5 border-b text-gray-900 border-gray-200 bg-white text-[12px]">
+        Clib ID : <span className="text-sm text-gray-900">{clubId}</span>
       </td>
-      
+
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <div className="flex items-center">
           <div className="shrink-0">
@@ -83,6 +90,23 @@ const ManagerMyClubsDataRow = ({ club, refetch }) => {
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 ">{location}</p>
       </td>
+
+      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+        <p
+          className={`text-center rounded px-1 ${
+            status === "approved"
+              ? "bg-green-600 text-white"
+              : status === "pending"
+              ? "bg-yellow-300 text-yellow-900 font-semibold"
+              : status === "rejected"
+              ? "bg-red-600 text-white"
+              : "bg-gray-500 text-white"
+          }`}
+        >
+          {status}
+        </p>
+      </td>
+
       {/* Update */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <span

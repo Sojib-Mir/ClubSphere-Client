@@ -1,21 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import ClubCard from "./ClubCard";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 
 const Clubs = () => {
-  const { data: clubs = [], isLoading } = useQuery({
-    queryKey: ["clubs"],
+  const currentStatus = "approved";
+  const [search, setSearchTerm] = useState("");
+  const [category, setCategory] = useState("");
+
+  const {
+    data: clubs = [],
+    isFetching,
+    isLoading,
+  } = useQuery({
+    queryKey: ["clubs", currentStatus, search, category],
     queryFn: async () => {
-      const result = await axios(`${import.meta.env.VITE_API_URL}/clubs`);
+      const result = await axios(
+        `${
+          import.meta.env.VITE_API_URL
+        }/clubs?status=${currentStatus}&search=${search}&filter=${category}`
+      );
       return result.data;
     },
   });
 
-  console.log(clubs);
+  const handleSelect = (e) => {
+    const selectedValue = e.target.value;
+    setCategory(selectedValue);
+  };
 
-  if (isLoading) return <LoadingSpinner />;
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <div>
@@ -30,6 +47,8 @@ const Clubs = () => {
             <input
               type="text"
               placeholder="Search by clubs name..."
+              onChange={handleSearchChange}
+              value={search}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-sky-300 focus:border-sky-300 transition duration-150 shadow-sm"
             />
             {/* search icon */}
@@ -51,21 +70,48 @@ const Clubs = () => {
         <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-4 w-5/12 md:w-auto ms-2">
           {/* dropdown */}
           <select
-            className="w-full sm:w-40 py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-sky-300 focus:border-sky-300 bg-white 
-                     dark:bg-[#1D232A] dark:text-white dark:border-gray-700"
+            onChange={handleSelect}
+            value={category}
+            className="w-full sm:w-40 py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-sky-300 focus:border-sky-300 bg-white
+              dark:bg-[#1D232A] dark:text-white dark:border-gray-700"
           >
-            <option value="">Filter by Category</option>
-            <option value="photography">Photography</option>
-            <option value="sports">Sports</option>
-            <option value="tech">Tech</option>
+            <option value="">All Category</option>
+            <option value="Technology">Technology & Coding</option>
+            <option value="Art&Creative">Art & Creative Design</option>
+            <option value="Sports&Fitness">Sports & Fitness</option>
+            <option value="Education">Education & Academics</option>
+            <option value="Health">Health & Wellness</option>
+            <option value="Music">Music & Performance</option>
+            <option value="Books&Reading">Books & Reading</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Science">Science & Research</option>
+            <option value="Arts&Culture">Arts & Culture</option>
+            <option value="Career">Career & Business</option>
+            <option value="Finance">Finance & Investing</option>
+            <option value="Photography">Photography & Film</option>
+            <option value="Nature&Gardening">Nature & Gardening</option>
+            <option value="Food&Cooking">Food & Cooking</option>
           </select>
         </div>
       </div>
 
+      {isFetching && clubs.length > 0 && (
+        <div className="text-center ">
+          <LoadingSpinner />
+        </div>
+      )}
+
+      {/* Club Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 pt-2 pb-5">
-        {clubs.map((club) => (
-          <ClubCard key={club._id} club={club} />
-        ))}
+        {clubs.length > 0 ? (
+          clubs.map((club) => (
+            <ClubCard key={club._id} club={club} isLoading={isLoading} />
+          ))
+        ) : (
+          <p className="col-span-full text-center text-3xl text-red-500 mt-20">
+            No clubs found matching your criteria.
+          </p>
+        )}
       </div>
     </div>
   );

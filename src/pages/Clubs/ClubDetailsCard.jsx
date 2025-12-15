@@ -2,12 +2,13 @@ import { MapPin, DollarSign, Users, Clock } from "lucide-react";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { DetailCard } from "../Events/DetailsCard";
 import { useNavigate, useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
 import { SiDinersclub } from "react-icons/si";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const ClubDetailsCard = () => {
   const { id } = useParams();
@@ -37,7 +38,11 @@ const ClubDetailsCard = () => {
     clubId,
   } = clubs || {};
 
-  const { data: memberships = {}, isLoading: membershipLoading } = useQuery({
+  const {
+    data: memberships = {},
+    isLoading: membershipLoading,
+    refetch: refetchRegistration,
+  } = useQuery({
     queryKey: ["membership", id],
     queryFn: async () => {
       const result = await axiosSecure(
@@ -47,13 +52,30 @@ const ClubDetailsCard = () => {
     },
   });
 
-  const { paymentStatus, membar } = memberships || {};
-  const isMemberOfThisClub = paymentStatus === "paid" && membar === user?.email;
+  const { paymentStatus, userEmail } = memberships || {};
+
+  const isMemberOfThisClub =
+    paymentStatus === "paid" && userEmail === user?.email;
 
   const navigate = useNavigate();
   const feeDisplay = membershipFee > 0 ? `৳ ${membershipFee} / Month` : "FREE";
   const feeColor = membershipFee > 0 ? "text-red-700" : "text-green-700";
   const categoryIcon = category?.includes("Science") ? Clock : Users;
+
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: async (payload) =>
+      await axiosSecure.post(`/create-checkout-session`, payload),
+    onSuccess: (data) => {
+      console.log(data);
+      refetchRegistration();
+      window.location.href = data.url;
+      toast.success(`Register Successful!`);
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+    retry: 3,
+  });
 
   const handlePayment = async () => {
     const paymentInfo = {
@@ -87,10 +109,12 @@ const ClubDetailsCard = () => {
       userName: user?.displayName,
       joinedAt: new Date().toISOString(),
     };
-    await axios.post(
-      `${import.meta.env.VITE_API_URL}/memberships`,
-      membershipData
-    );
+
+    await mutateAsync(membershipData);
+    // await axios.post(
+    //   `${import.meta.env.VITE_API_URL}/memberships`,
+    //   membershipData
+    // );
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -224,7 +248,7 @@ const ClubDetailsCard = () => {
 
               <button
                 onClick={handlePayment}
-                disabled={isMemberOfThisClub}
+                disabled={isMemberOfThisClub || isPending}
                 className={`w-full py-3 font-semibold text-white rounded-lg transition duration-300 shadow-md text-xl ${
                   isMemberOfThisClub
                     ? "bg-gray-400 cursor-not-allowed shadow-none"

@@ -6,13 +6,13 @@ import Swal from "sweetalert2";
 const ManagerRegisterEventsDataRow = ({ register, refetch }) => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
-  
+
   const { eventName, userEmail, clubId, _id, registeredAt, status } =
     register || {};
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: async (id) => {
-      const response = await axiosSecure.delete(`/event-register/${id}`);
+      const response = await axiosSecure.delete(`/register-event/${id}`);
       return response.data;
     },
     onSuccess: () => {
@@ -22,7 +22,7 @@ const ManagerRegisterEventsDataRow = ({ register, refetch }) => {
         text: "Your Register Member has been deleted successfully.",
         icon: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["event-register"] });
+      queryClient.invalidateQueries({ queryKey: ["register-event"] });
       refetch();
     },
     retry: 3,
@@ -48,8 +48,8 @@ const ManagerRegisterEventsDataRow = ({ register, refetch }) => {
 
   return (
     <tr>
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-[12px]">
-        Club ID : <span className="text-sm">{clubId}</span>
+      <td className="text-gray-900 px-5 py-5 border-b border-gray-200 bg-white text-[12px]">
+        Club ID : <span className="text-sm ">{clubId}</span>
       </td>
 
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

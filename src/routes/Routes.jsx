@@ -122,11 +122,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-events",
-        element: <ManageEvents />,
+        element: (
+          <PrivateRoute>
+            <ManageEvents />
+          </PrivateRoute>
+        ),
       },
       {
         path: "ragister-events",
-        element: <RagisterEvents />,
+        element: (
+          <PrivateRoute>
+            <RagisterEvents />
+          </PrivateRoute>
+        ),
       },
 
       // Admin's route

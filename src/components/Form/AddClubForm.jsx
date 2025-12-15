@@ -65,7 +65,7 @@ const AddClubForm = () => {
         location,
         managerName,
         managerEmail,
-        status: "Pending",
+        status: "pending",
         createdAt,
         manager: {
           image: user?.photoURL,

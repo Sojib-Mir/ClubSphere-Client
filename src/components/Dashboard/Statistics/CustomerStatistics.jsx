@@ -1,4 +1,4 @@
-import { FaDollarSign } from "react-icons/fa";
+import { FaCcDinersClub, FaDollarSign, FaUserAlt } from "react-icons/fa";
 import { BsFillCartPlusFill, BsFillHouseDoorFill } from "react-icons/bs";
 import UseTitle from "../../../hooks/useTitle";
 import useAuth from "../../../hooks/useAuth";
@@ -62,13 +62,13 @@ const CustomerStatistics = () => {
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-orange-600 to-orange-400 text-white shadow-orange-500/40`}
             >
-              <FaDollarSign className="w-6 h-6 text-white" />
+              <FaCcDinersClub className="w-6 h-6 text-white" />
             </div>
             <div className="p-4 text-right">
-              <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+              <p className="block antialiased font-sans text-2xl leading-normal font-normal text-blue-gray-600">
                 Total Joined Clubs
               </p>
-              <h4 className="block antialiased tracking-normal font-sans text-lg font-semibold leading-snug text-blue-gray-900">
+              <h4 className="block antialiased tracking-normal font-sans text-lg font-semibold leading-snug text-orange-500 ">
                 Found ({myclubs.length})
               </h4>
             </div>
@@ -82,13 +82,13 @@ const CustomerStatistics = () => {
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-blue-600 to-blue-400 text-white shadow-blue-500/40`}
             >
-              <BsFillCartPlusFill className="w-6 h-6 text-white" />
+              <FaUserAlt className="w-6 h-6 text-white" />
             </div>
             <div className="p-4 text-right">
-              <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+              <p className="block antialiased font-sans text-xl leading-normal font-semibold text-blue-gray-600 ">
                 Total Registered Events
               </p>
-              <h4 className="block antialiased tracking-normal font-sans text-lg font-semibold leading-snug text-blue-gray-900">
+              <h4 className="block antialiased tracking-normal font-sans text-lg font-semibold leading-snug text-blue-600">
                 Found ({myEvents.length})
               </h4>
             </div>
@@ -102,13 +102,13 @@ const CustomerStatistics = () => {
             <div
               className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
             >
-              <BsFillHouseDoorFill className="w-6 h-6 text-white" />
+              <FaUserAlt className="w-6 h-6 text-white" />
             </div>
             <div className="p-4 text-right">
-              <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
+              <p className="block antialiased font-sans text-2xl leading-normal font-normal text-blue-gray-600">
                 Total Payment History
               </p>
-              <h4 className="block antialiased tracking-normal font-sans text-lg font-semibold leading-snug text-blue-gray-900">
+              <h4 className="block antialiased tracking-normal font-sans text-lg font-semibold leading-snug text-pink-600">
                 Found ({myPayments.length})
               </h4>
             </div>

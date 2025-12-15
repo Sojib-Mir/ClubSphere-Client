@@ -6,11 +6,13 @@ import { Link } from "react-router";
 
 const RecentClubs = () => {
   const axiosSecure = useAxiosSecure();
+  const currentStatus = "approved";
+
   const { data: clubsData = {}, isLoading } = useQuery({
-    queryKey: ["recent-clubs"],
+    queryKey: ["recent-clubs", currentStatus],
     queryFn: async () => {
       const result = await axiosSecure(
-        `${import.meta.env.VITE_API_URL}/recent-clubs`
+        `${import.meta.env.VITE_API_URL}/clubs?status=${currentStatus}`
       );
       return result.data;
     },

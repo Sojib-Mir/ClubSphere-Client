@@ -11,11 +11,12 @@ import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 
 const Banner = () => {
   const axiosSecure = useAxiosSecure();
+  const currentStatus = "approved";
   const { data: banerData = {}, isLoading } = useQuery({
-    queryKey: ["banerData"],
+    queryKey: ["banerData", currentStatus],
     queryFn: async () => {
       const result = await axiosSecure(
-        `${import.meta.env.VITE_API_URL}/recent-clubs`
+        `${import.meta.env.VITE_API_URL}/clubs?status=${currentStatus}`
       );
       return result.data;
     },

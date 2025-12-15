@@ -1,6 +1,3 @@
-// import { useState } from "react";
-// import DeleteModal from "../../Modal/DeleteModal";
-
 const CustomerOrderDataRow = ({ clubs }) => {
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -41,7 +38,9 @@ const CustomerOrderDataRow = ({ clubs }) => {
 
       {/* Club Id */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-        <p className=" bg-pink-500/20 text-center py-px rounded">{clubId}</p>
+        <p className=" bg-pink-500/20 text-center py-px rounded text-gray-900">
+          {clubId}
+        </p>
       </td>
 
       {/* Category */}
@@ -63,26 +62,13 @@ const CustomerOrderDataRow = ({ clubs }) => {
 
       {/* transactionId */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-        <p className=" ">{transactionId}</p>
+        <p className="text-gray-900">{transactionId}</p>
       </td>
 
       {/* paymentDate */}
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-        <p className=" ">{date}</p>
+        <p className="text-gray-900">{date}</p>
       </td>
-
-      {/* Action (Cancel/Delete Button)
-      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm font-semibold">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="relative cursor-pointer inline-block px-3 py-1 font-semibold text-red-900 leading-tight"
-        >
-          <span className="absolute cursor-pointer inset-0 bg-red-200 opacity-50 rounded-full"></span>
-          <span className="relative cursor-pointer">Cancel</span>
-        </button>
-
-        <DeleteModal isOpen={isOpen} closeModal={closeModal} />
-      </td> */}
     </tr>
   );
 };
