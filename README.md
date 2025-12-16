@@ -6,6 +6,9 @@ A modern, high-performance web application built with **React 19**, **Vite**, an
 
 ---
 
+> 👤 **Admin Email:** `admin@gmail.com`  
+> 🔑 **Admin Password:** `123456Aa@`
+
 ## ✨ Features
 
 - **⚡ Lightning Fast:** Optimized with Vite for near-instant HMR (Hot Module Replacement).
