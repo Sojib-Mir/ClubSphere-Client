@@ -199,7 +199,7 @@ const SignUp = () => {
 
               <span
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute text-lg right-4 top-9 cursor-pointer z-50"
+                className="absolute text-lg right-4 top-9 cursor-pointer text-gray-950 z-9999999"
               >
                 {showPassword ? <TbEyeOff /> : <TbEye />}
               </span>

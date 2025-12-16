@@ -1,15 +1,17 @@
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { formatDate, imageUpload } from "./../../utils/index";
-import LoadingSpinner from "../Shared/LoadingSpinner";
-import ErrorPage from "../../pages/ErrorPage";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const AddClubForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -17,43 +19,38 @@ const AddClubForm = () => {
     reset,
   } = useForm();
 
-  const {
-    isPending,
-    isError,
-    mutateAsync,
-    reset: mutationReset,
-  } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: async (payload) => await axiosSecure.post(`/clubs`, payload),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       toast.success("New Club Added Successful!");
-      mutationReset();
+      reset();
     },
     onError: (error) => {
       console.log(error);
+      toast.error("Failed to add club.");
     },
-    retry: 3,
   });
 
   const onSubmit = async (data) => {
-    const currentIsoDate = new Date().toISOString();
-    const { date, time } = formatDate(currentIsoDate);
-    const createdAt = `${date} at ${time}`;
-
-    const {
-      name,
-      location,
-      category,
-      membershipFee,
-      managerEmail,
-      description,
-      image,
-      managerName,
-    } = data;
-
-    const imageFile = image[0];
+    setLoading(true);
 
     try {
+      const currentIsoDate = new Date().toISOString();
+      const { date, time } = formatDate(currentIsoDate);
+      const createdAt = `${date} at ${time}`;
+
+      const {
+        name,
+        location,
+        category,
+        membershipFee,
+        managerEmail,
+        description,
+        image,
+        managerName,
+      } = data;
+
+      const imageFile = image[0];
       const imageURL = await imageUpload(imageFile);
 
       const clubData = {
@@ -75,15 +72,13 @@ const AddClubForm = () => {
       };
 
       await mutateAsync(clubData);
-      reset();
     } catch (error) {
       console.error("Club Submission Error:", error);
-      toast.error("Failed to add club. Please try again.");
+      toast.error("Something went wrong!");
+    } finally {
+      setLoading(false);
     }
   };
-
-  if (isPending) return <LoadingSpinner />;
-  if (isError) return <ErrorPage />;
 
   return (
     <div className="w-full flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50 my-20 md:my-0 md:min-h-screen md:px-10">
@@ -106,7 +101,7 @@ const AddClubForm = () => {
                   placeholder="Club Name"
                   {...register("name", { required: true })}
                 />
-                {errors.name?.type === "required" && (
+                {errors.name && (
                   <p className="text-red-500 text-base">
                     Club Name is Required!
                   </p>
@@ -124,7 +119,7 @@ const AddClubForm = () => {
                   placeholder="Membership Fee"
                   {...register("membershipFee", { required: true })}
                 />
-                {errors.membershipFee?.type === "required" && (
+                {errors.membershipFee && (
                   <p className="text-red-500 text-base">
                     Membership Fee is Required!
                   </p>
@@ -134,7 +129,7 @@ const AddClubForm = () => {
 
             {/* Location + Category */}
             <div className="flex gap-2 w-full">
-              {/* Location */}
+              {/* Location*/}
               <div className="space-y-1 text-lg w-full">
                 <label htmlFor="location" className="block text-gray-600 ">
                   Location
@@ -145,14 +140,14 @@ const AddClubForm = () => {
                   placeholder="Location"
                   {...register("location", { required: true })}
                 />
-                {errors.location?.type === "required" && (
+                {errors.location && (
                   <p className="text-red-500 text-base">
                     Location is Required!
                   </p>
                 )}
               </div>
 
-              {/* Club Category */}
+              {/* Category */}
               <div className="space-y-1 text-lg w-full">
                 <label htmlFor="category" className="block text-gray-600 ">
                   Category
@@ -161,9 +156,7 @@ const AddClubForm = () => {
                   className="w-full px-3 py-3 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
                   {...register("category", { required: true })}
                 >
-                  <option selected value="">
-                    All Category
-                  </option>
+                  <option value="">All Category</option>
                   <option value="Technology">Technology & Coding</option>
                   <option value="Art & Creative">Art & Creative Design</option>
                   <option value="Sports & Fitness">Sports & Fitness</option>
@@ -180,7 +173,7 @@ const AddClubForm = () => {
                   <option value="Nature / Gardening">Nature & Gardening</option>
                   <option value="Food / Cooking">Food & Cooking</option>
                 </select>
-                {errors.category?.type === "required" && (
+                {errors.category && (
                   <p className="text-red-500 text-base">
                     Category is Required!
                   </p>
@@ -188,38 +181,31 @@ const AddClubForm = () => {
               </div>
             </div>
 
-            {/* Manamer Name + Manager Email */}
+            {/* Manager info (Disabled) */}
             <div className="flex justify-between gap-2 w-full">
-              {/* Manager Name */}
               <div className="space-y-1 text-lg w-full">
-                <label htmlFor="name" className="block text-gray-600">
-                  Manager Name
-                </label>
+                <label className="block text-gray-600">Manager Name</label>
                 <input
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none text-gray-900"
                   type="text"
                   disabled
                   defaultValue={user?.displayName}
-                  {...register("managerName", { required: true })}
+                  {...register("managerName")}
                 />
               </div>
-
-              {/* Manager Email */}
               <div className="space-y-1 text-lg w-full">
-                <label htmlFor="managerEmail" className="block text-gray-600">
-                  Manager Email
-                </label>
+                <label className="block text-gray-600">Manager Email</label>
                 <input
-                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900"
+                  className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none text-gray-900"
                   type="text"
                   disabled
                   defaultValue={user?.email}
-                  {...register("managerEmail", { required: true })}
+                  {...register("managerEmail")}
                 />
               </div>
             </div>
 
-            {/* Club Description */}
+            {/* Description */}
             <div className="space-y-1 text-lg w-full">
               <label htmlFor="description" className="block text-gray-600">
                 Description
@@ -229,33 +215,31 @@ const AddClubForm = () => {
                 className="w-full px-3 py-2 border rounded-md border-gray-300 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 text-gray-900 h-32"
                 {...register("description", { required: true })}
               ></textarea>
-              {errors.description?.type === "required" && (
+              {errors.description && (
                 <p className="text-red-500 text-base">
                   Club Description is Required!
                 </p>
               )}
             </div>
 
-            {/* Image */}
+            {/* Image Upload */}
             <div className="w-full m-auto rounded-lg grow">
               <div className="file_upload px-5 py-3 relative border-4 border-dotted border-sky-300 rounded-lg">
                 <div className="flex flex-col w-max mx-auto text-center">
                   <label>
                     <input
-                      className="text-sm cursor-pointer w-36 hidden"
+                      className="hidden"
                       type="file"
                       accept="image/*"
                       {...register("image", { required: true })}
                     />
-                    <div className="border-gray-200 border rounded font-semibold cursor-pointer p-1 px-3 hover:bg-sky-500">
+                    <div className="border-gray-200 border rounded font-semibold cursor-pointer p-1 px-3 hover:bg-sky-500 hover:text-white transition">
                       Upload Club Image
                     </div>
-                    {errors.image?.type === "required" && (
-                      <p className="text-red-500 text-base">
-                        Image is Required!
-                      </p>
-                    )}
                   </label>
+                  {errors.image && (
+                    <p className="text-red-500 text-base">Image is Required!</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -263,9 +247,16 @@ const AddClubForm = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full cursor-pointer p-2 mt-5 text-center font-medium text-xl text-white transition duration-200 rounded shadow-md bg-sky-700 hover:bg-pink-700"
+              disabled={loading}
+              className={`w-full cursor-pointer p-2 mt-5 text-center font-medium text-xl text-white transition duration-200 rounded shadow-md ${
+                loading ? "bg-gray-400" : "bg-sky-700 hover:bg-pink-700"
+              }`}
             >
-              Add Club
+              {loading ? (
+                <TbFidgetSpinner className="animate-spin m-auto" />
+              ) : (
+                "Add Club"
+              )}
             </button>
           </div>
         </div>

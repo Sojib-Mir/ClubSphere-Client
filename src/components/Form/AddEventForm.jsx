@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
@@ -6,10 +7,12 @@ import toast from "react-hot-toast";
 import { formatDate, imageUpload, isFutureDate } from "./../../utils/index";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import ErrorPage from "../../pages/ErrorPage";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const AddEventForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -44,6 +47,7 @@ const AddEventForm = () => {
   });
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const currentIsoDate = new Date().toISOString();
     const { date, time } = formatDate(currentIsoDate);
     const createdAt = `${date} at ${time}`;
@@ -90,6 +94,8 @@ const AddEventForm = () => {
       reset();
     } catch (error) {
       toast.error("Failed to add Event. Please try again.", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -342,9 +348,16 @@ const AddEventForm = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full cursor-pointer p-2 mt-5 text-center font-medium text-xl text-white transition duration-200 rounded shadow-md bg-sky-700 hover:bg-pink-700"
+              disabled={loading}
+              className={`w-full cursor-pointer p-2 mt-5 text-center font-medium text-xl text-white transition duration-200 rounded shadow-md ${
+                loading ? "bg-gray-400" : "bg-sky-700 hover:bg-pink-700"
+              }`}
             >
-              Add Event
+              {loading ? (
+                <TbFidgetSpinner className="animate-spin m-auto" />
+              ) : (
+                "Add Event"
+              )}
             </button>
           </div>
         </div>

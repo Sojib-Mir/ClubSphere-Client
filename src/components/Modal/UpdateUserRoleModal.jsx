@@ -30,24 +30,24 @@ const UpdateUserRoleModal = ({ isOpen, closeModal, user, refetch }) => {
         className="relative z-10 focus:outline-none"
         onClose={closeModal}
       >
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto border">
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl"
+              className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0 shadow-xl border border-gray-200"
             >
               <DialogTitle
                 as="h3"
-                className="text-base/7 font-medium text-black"
+                className="text-base/7 font-semibold text-black"
               >
                 Update User Role
               </DialogTitle>
               <form>
-                <div>
+                <div className="p-2">
                   <select
                     value={updatedRole}
                     onChange={(e) => setUpdatedRole(e.target.value)}
-                    className="w-full my-3 border border-gray-200 rounded-xl px-2 py-3"
+                    className="w-full my-3 p-2 border border-gray-200 text-gray-950 rounded-xl px-2 py-3 cursor-pointer font-semibold"
                     name="role"
                   >
                     <option value="customer">Customer</option>
@@ -59,13 +59,13 @@ const UpdateUserRoleModal = ({ isOpen, closeModal, user, refetch }) => {
                   <button
                     onClick={handleRoleUpdate}
                     type="button"
-                    className="cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                    className="cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-600 px-4 py-1 hover:bg-green-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 font-semibold text-black"
                   >
                     Update
                   </button>
                   <button
                     type="button"
-                    className="cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                    className="cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-1 hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 text-white text-center font-semibold"
                     onClick={closeModal}
                   >
                     Cancel
