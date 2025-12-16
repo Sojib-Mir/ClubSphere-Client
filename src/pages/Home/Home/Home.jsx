@@ -1,6 +1,8 @@
 import Plants from "../../../components/Home/Plants";
+import ClubSphereWorks from "../ClubSphereWorks/ClubSphereWorks";
 import Hero from "../Hero/Hero";
 import RecentClubs from "../RecentClubs/RecentClubs";
+import WhyJoinAClub from "../WhyJoinClub/WhyJoinClub";
 
 const Home = () => {
   return (
@@ -11,11 +13,19 @@ const Home = () => {
       </section>
 
       {/* Recent Clubs */}
-      <section><RecentClubs/></section>
+      <section>
+        <RecentClubs />
+      </section>
 
-      {/* <Plants /> */}
+      {/* How ClubSphere Works */}
+      <section>
+        <ClubSphereWorks />
+      </section>
 
-      {/* More components */}
+      {/* WhyJoinClub */}
+      <section>
+        <WhyJoinAClub />
+      </section>
     </div>
   );
 };
