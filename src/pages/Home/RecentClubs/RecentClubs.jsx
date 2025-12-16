@@ -27,8 +27,8 @@ const RecentClubs = () => {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-2 pb-5">
-        {clubsData.map((club) => (
-          <RecentClubsCard key={club._id} club={club} />
+        {clubsData.map((club,i) => (
+          <RecentClubsCard key={club._id} club={club} i={i} />
         ))}
       </div>
 
@@ -37,7 +37,7 @@ const RecentClubs = () => {
           to={"/clubs"}
           className="btn btn-sm hover:bg-blue-500 text-lg bg-pink-500 p-5 my-5 border-none"
         >
-          Explore All Clubs
+          More Clubs
         </Link>
       </button>
     </div>

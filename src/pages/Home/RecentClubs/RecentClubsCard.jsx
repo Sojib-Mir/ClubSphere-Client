@@ -1,12 +1,26 @@
 import React from "react";
 import { Link } from "react-router";
+import { motion } from "motion/react";
 
-const RecentClubsCard = ({ club }) => {
+const RecentClubsCard = ({ club,i }) => {
   const feeText =
     club.membershipFee === 0 ? "Free" : `BDT ${club.membershipFee}/month`;
 
+ const cardVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.2, duration: 0.5 },
+    }),
+  };
+
   return (
-    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border dark:border-black/50 border-gray-200">
+    <motion.div initial="hidden"
+      custom={i}
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.2 }}
+      variants={cardVariants} className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border dark:border-black/50 border-gray-200">
       {/* image + category */}
       <div className="relative">
         <img
@@ -68,7 +82,7 @@ const RecentClubsCard = ({ club }) => {
           See Details
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

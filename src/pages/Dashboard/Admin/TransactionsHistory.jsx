@@ -19,8 +19,6 @@ const TransactionsHistory = () => {
     },
   });
 
-  console.log(transactionsHistory);
-
   if (isLoading) return <LoadingSpinner />;
   return (
     <>

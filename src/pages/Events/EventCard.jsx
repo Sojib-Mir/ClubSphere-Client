@@ -1,15 +1,32 @@
 import { Link } from "react-router";
 import { formatToBDT, isFutureDate } from "../../utils";
+import { motion } from 'framer-motion';
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, i }) => {
   const { _id, eventDate, title, image, location, clubName } = event || {};
   const isUpcoming = isFutureDate(eventDate);
   const isPast =
     !isUpcoming && new Date(eventDate).getTime() < new Date().getTime();
   const isDisabled = true;
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.2, duration: 0.5 },
+    }),
+  };
+
   return (
-    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700 flex flex-col">
+    <motion.div
+      initial="hidden"
+      custom={i}
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.2 }}
+      variants={cardVariants}
+      className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700 flex flex-col"
+    >
       {/* Image */}
       <div className="relative">
         <img
@@ -104,7 +121,7 @@ const EventCard = ({ event }) => {
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

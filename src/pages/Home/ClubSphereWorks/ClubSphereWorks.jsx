@@ -1,4 +1,5 @@
 import { Search, UserPlus, LineChart, ShieldCheck } from "lucide-react";
+import { motion } from "motion/react";
 
 const ClubSphereWorks = () => {
   const steps = [
@@ -40,6 +41,15 @@ const ClubSphereWorks = () => {
     },
   ];
 
+   const cardVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.2, duration: 0.5 },
+    }),
+  };
+
   return (
     <section className="py-20 px-4 lg:px-8">
       <div className="md:max-w-7xl w-full mx-auto">
@@ -56,9 +66,14 @@ const ClubSphereWorks = () => {
 
         {/* Responsive Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {steps.map((step) => (
-            <div
+          {steps.map((step, i) => (
+            <motion.div
               key={step.id}
+              initial="hidden"
+              custom={i}
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
+              variants={cardVariants}
               className="group relative bg-white p-10 rounded-4xl shadow-sm border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col items-center text-center"
             >
               {/* Icon Container */}
@@ -78,7 +93,7 @@ const ClubSphereWorks = () => {
 
               {/* Bottom Decorative Element */}
               <div className="mt-8 h-1 w-12 bg-slate-100 rounded-full group-hover:w-24 group-hover:bg-orange-500 transition-all duration-500"></div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

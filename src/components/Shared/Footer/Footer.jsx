@@ -32,7 +32,7 @@ const Footer = () => {
           <ul className="space-y-2 mt-4">
             <li>
               <Link
-                to="/"
+                to="/clubs"
                 className="text-gray-900 dark:text-white hover:text-blue-600"
               >
                 Clubs
@@ -40,7 +40,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                to="/"
+                to="/events"
                 className="text-gray-900 dark:text-white hover:text-blue-600"
               >
                 Events
@@ -48,7 +48,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                to="/"
+                to="/login"
                 className="text-gray-900 dark:text-white hover:text-blue-600"
               >
                 Login

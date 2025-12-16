@@ -1,14 +1,31 @@
 import { Link } from "react-router";
 import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import { motion } from "motion/react";
 
-const ClubCard = ({ club, isLoading }) => {
+const ClubCard = ({ club, isLoading, i }) => {
   const feeText =
     club.membershipFee === 0 ? "Free" : `BDT ${club.membershipFee}/month`;
 
   if (isLoading) return <LoadingSpinner />;
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.2, duration: 0.5 },
+    }),
+  };
+
   return (
-    <div className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700 grow flex flex-col">
+    <motion.div
+      initial="hidden"
+      custom={i}
+      whileInView="visible"
+      viewport={{ once: false, amount: 0.2 }}
+      variants={cardVariants}
+      className="max-w-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 bg-white border border-gray-300 dark:border-gray-700 grow flex flex-col"
+    >
       {/* image + category */}
       <div className="relative">
         <img
@@ -69,7 +86,7 @@ const ClubCard = ({ club, isLoading }) => {
           View Club
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

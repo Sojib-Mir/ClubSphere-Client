@@ -12,17 +12,17 @@ const Home = () => {
         <Hero />
       </section>
 
-      {/* Recent Clubs */}
+      {/* Recent Clubs Section */}
       <section>
         <RecentClubs />
       </section>
 
-      {/* How ClubSphere Works */}
+      {/* How ClubSphere Works Section */}
       <section>
         <ClubSphereWorks />
       </section>
 
-      {/* WhyJoinClub */}
+      {/* Why Join Club Section */}
       <section>
         <WhyJoinAClub />
       </section>
