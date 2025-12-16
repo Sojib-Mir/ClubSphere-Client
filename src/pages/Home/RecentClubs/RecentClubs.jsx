@@ -12,7 +12,7 @@ const RecentClubs = () => {
     queryKey: ["recent-clubs", currentStatus],
     queryFn: async () => {
       const result = await axiosSecure(
-        `${import.meta.env.VITE_API_URL}/clubs?status=${currentStatus}`
+        `${import.meta.env.VITE_API_URL}/recent-clubs?status=${currentStatus}`
       );
       return result.data;
     },

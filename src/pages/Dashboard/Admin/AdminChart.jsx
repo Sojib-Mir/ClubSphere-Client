@@ -40,7 +40,7 @@ const AdminChart = ({ stats }) => {
             dataKey="name"
             axisLine={false}
             tickLine={false}
-            tick={{ fill: "#64748b", fontSize: 12, fontWeight: 600 }}
+            tick={{ fill: "#000000", fontSize: 12, fontWeight: 600 }}
             dy={10}
           />
           <YAxis

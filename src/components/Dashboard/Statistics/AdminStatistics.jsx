@@ -8,6 +8,7 @@ import LoadingSpinner from "../../Shared/LoadingSpinner";
 import useAuth from "../../../hooks/useAuth";
 import { MdManageAccounts, MdOutlinePendingActions } from "react-icons/md";
 import { GrTransaction } from "react-icons/gr";
+import { Link } from "react-router";
 
 const AdminStatistics = () => {
   UseTitle("Admin-Statistics");
@@ -65,7 +66,10 @@ const AdminStatistics = () => {
           {/* small cards */}
           <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grow">
             {/* Total Users */}
-            <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100">
+            <Link
+              to={"/dashboard/manage-users"}
+              className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100"
+            >
               <div
                 className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-orange-600 to-orange-400 text-white shadow-orange-500/40`}
               >
@@ -79,10 +83,13 @@ const AdminStatistics = () => {
                   Found ({users.length})
                 </h4>
               </div>
-            </div>
+            </Link>
 
             {/* Total Manager Request */}
-            <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100">
+            <Link
+              to={"/dashboard/manager-requests"}
+              className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100"
+            >
               <div
                 className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-blue-600 to-blue-400 text-white shadow-blue-500/40`}
               >
@@ -96,10 +103,13 @@ const AdminStatistics = () => {
                   Found ({requests.length})
                 </h4>
               </div>
-            </div>
+            </Link>
 
             {/* Total Pending Clubs */}
-            <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100">
+            <Link
+              to={"/dashboard/manage-clubs"}
+              className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100"
+            >
               <div
                 className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-pink-600 to-pink-400 text-white shadow-pink-500/40`}
               >
@@ -113,10 +123,13 @@ const AdminStatistics = () => {
                   Found ({clubs.length})
                 </h4>
               </div>
-            </div>
+            </Link>
 
             {/* Total Transactions History */}
-            <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100">
+            <Link
+              to={"/dashboard/transactions-history"}
+              className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md border border-gray-100"
+            >
               <div
                 className={`bg-clip-border mx-4 rounded-xl overflow-hidden bg-linear-to-tr shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center from-green-600 to-green-400 text-white shadow-green-500/40`}
               >
@@ -130,7 +143,7 @@ const AdminStatistics = () => {
                   Found({transactionsHistory.length})
                 </h4>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

@@ -48,13 +48,6 @@ const TransactionsHistory = () => {
               It looks like you haven't joined any clubs or completed a
               transaction yet.
             </p>
-
-            <Link
-              to="/clubs"
-              className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300 ease-in-out"
-            >
-              Explore Clubs
-            </Link>
           </div>
         </div>
       ) : (
