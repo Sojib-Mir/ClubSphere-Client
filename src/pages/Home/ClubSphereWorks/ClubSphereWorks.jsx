@@ -24,7 +24,7 @@ const ClubSphereWorks = () => {
       id: "03",
       title: "Track Your Progress",
       description:
-        "Keep track of your club activities, persona achievements and growth.",
+        "Keep track of your club activities, personal achievements and growth.",
       icon: <LineChart className="w-7 h-7" />,
       accentColor: "text-emerald-600",
       bgColor: "bg-emerald-50",
