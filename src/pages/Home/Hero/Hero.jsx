@@ -13,7 +13,7 @@ const Banner = () => {
   const axiosSecure = useAxiosSecure();
   const currentStatus = "approved";
 
-  const { data: banerData = [], isLoading } = useQuery({
+  const { data: banerData = {}, isLoading } = useQuery({
     queryKey: ["banerData", currentStatus],
     queryFn: async () => {
       const result = await axiosSecure(
@@ -22,8 +22,6 @@ const Banner = () => {
       return result.data;
     },
   });
-
-  console.log("hlw banner ======> ", banerData);
 
   if (isLoading) return <LoadingSpinner />;
 

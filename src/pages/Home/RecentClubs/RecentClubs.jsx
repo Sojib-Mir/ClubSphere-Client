@@ -8,7 +8,7 @@ const RecentClubs = () => {
   const axiosSecure = useAxiosSecure();
   const currentStatus = "approved";
 
-  const { data: clubsData = [], isLoading } = useQuery({
+  const { data: clubsData = {}, isLoading } = useQuery({
     queryKey: ["recent-clubs", currentStatus],
     queryFn: async () => {
       const result = await axiosSecure(
