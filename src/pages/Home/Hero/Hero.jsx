@@ -62,42 +62,41 @@ const Banner = () => {
         grabCursor={true}
         spaceBetween={0}
       >
-        {Array.isArray(banerData) &&
-          banerData.map((slide) => (
-            <SwiperSlide key={slide.id}>
-              <div className="relative w-full h-[350px] md:h-[600px]">
-                <img
-                  src={slide.bannerImage}
-                  className="w-full h-full object-cover"
-                  alt={slide.clubName}
-                />
-                <div className="absolute inset-0 bg-black/50 flex flex-col items-center md:items-start justify-center text-center px-4">
-                  <h2 className="text-white text-2xl md:text-7xl font-bold drop-shadow-lg md:ml-20">
-                    {slide.clubName}
-                  </h2>
+        {banerData.map((slide) => (
+          <SwiperSlide key={slide.id}>
+            <div className="relative w-full h-[350px] md:h-[600px]">
+              <img
+                src={slide.bannerImage}
+                className="w-full h-full object-cover"
+                alt={slide.clubName}
+              />
+              <div className="absolute inset-0 bg-black/50 flex flex-col items-center md:items-start justify-center text-center px-4">
+                <h2 className="text-white text-2xl md:text-7xl font-bold drop-shadow-lg md:ml-20">
+                  {slide.clubName}
+                </h2>
 
-                  <p className="text-white text-sm md:text-2xl font-medium mt-3 drop-shadow md:ml-20">
-                    {slide.description}
-                  </p>
+                <p className="text-white text-sm md:text-2xl font-medium mt-3 drop-shadow md:ml-20">
+                  {slide.description}
+                </p>
 
-                  <div className="mt-5 flex gap-2">
-                    <Link
-                      to={`/clubs/${slide._id}`}
-                      className="btn md:w-3/6 text-white rounded bg-blue-800 hover:bg-pink-800 transition-colors duration-300 border-none md:ml-20 text-xl"
-                    >
-                      Join Club
-                    </Link>
-                    <Link
-                      to={``}
-                      className="btn text-white rounded btn-outline border hover:bg-pink-800 transition-colors duration-300 hover:border-none text-xl md:w-3/6"
-                    >
-                      Create Club
-                    </Link>
-                  </div>
+                <div className="mt-5 flex gap-2">
+                  <Link
+                    to={`/clubs/${slide._id}`}
+                    className="btn md:w-3/6 text-white rounded bg-blue-800 hover:bg-pink-800 transition-colors duration-300 border-none md:ml-20 text-xl"
+                  >
+                    Join Club
+                  </Link>
+                  <Link
+                    to={``}
+                    className="btn text-white rounded btn-outline border hover:bg-pink-800 transition-colors duration-300 hover:border-none text-xl md:w-3/6"
+                  >
+                    Create Club
+                  </Link>
                 </div>
               </div>
-            </SwiperSlide>
-          ))}
+            </div>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </motion.div>
   );

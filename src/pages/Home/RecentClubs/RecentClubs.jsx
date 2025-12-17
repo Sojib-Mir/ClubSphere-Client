@@ -27,7 +27,7 @@ const RecentClubs = () => {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-2 pb-5">
-        {Array.isArray(clubsData) && clubsData.map((club, i) => (
+        {clubsData.map((club, i) => (
           <RecentClubsCard key={club._id} club={club} i={i} />
         ))}
       </div>
