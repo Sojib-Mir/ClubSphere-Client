@@ -14,7 +14,9 @@ const ClubDetailsCard = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
 
+  // 1. Fetch Club Details
   const { data: clubs = {}, isLoading } = useQuery({
     queryKey: ["clubs", id],
     queryFn: async () => {
@@ -38,12 +40,10 @@ const ClubDetailsCard = () => {
     clubId,
   } = clubs || {};
 
-  const {
-    data: memberships = {},
-    isLoading: membershipLoading,
-    refetch: refetchRegistration,
-  } = useQuery({
-    queryKey: ["membership", id],
+  // 2. Fetch Membership Status
+  const { data: memberships = {}, isLoading: membershipLoading } = useQuery({
+    queryKey: ["membership", id, user?.email],
+    enabled: !!user?.email && !!id,
     queryFn: async () => {
       const result = await axiosSecure(
         `${import.meta.env.VITE_API_URL}/memberships/${id}?email=${user?.email}`
@@ -52,32 +52,58 @@ const ClubDetailsCard = () => {
     },
   });
 
-  const { paymentStatus, userEmail } = memberships || {};
+  const isMemberOfThisClub = memberships?.paymentStatus === "paid";
 
-  const isMemberOfThisClub =
-    paymentStatus === "paid" && userEmail === user?.email;
-
-  const navigate = useNavigate();
+  // UI display helpers
   const feeDisplay = membershipFee > 0 ? `৳ ${membershipFee} / Month` : "FREE";
   const feeColor = membershipFee > 0 ? "text-red-700" : "text-green-700";
   const categoryIcon = category?.includes("Science") ? Clock : Users;
 
   const { isPending, mutateAsync } = useMutation({
-    mutationFn: async (payload) =>
-      await axiosSecure.post(`/create-checkout-session`, payload),
+    mutationFn: async (allData) => {
+      const dbRes = await axiosSecure.post(
+        "/memberships",
+        allData.membershipData
+      );
+
+      if (
+        dbRes.data.insertedId ||
+        dbRes.data.message.includes("already joined")
+      ) {
+        const payRes = await axiosSecure.post(
+          "/create-checkout-session",
+          allData.paymentInfo
+        );
+        return payRes.data;
+      }
+      throw new Error("Could not save membership data");
+    },
     onSuccess: (data) => {
-      console.log(data);
-      refetchRegistration();
-      window.location.href = data.url;
-      toast.success(`Register Successful!`);
+      if (data?.url) {
+        window.location.href = data.url;
+      }
     },
     onError: (error) => {
-      toast.error(error);
+      toast.error(error.message || "Process failed!");
     },
-    retry: 3,
   });
 
   const handlePayment = async () => {
+    if (!user) return toast.error("Please login first!");
+
+    const membershipData = {
+      clubMainId: _id,
+      clubId,
+      managerEmail,
+      clubName,
+      bannerImage,
+      status: status,
+      paymentStatus: "paid",
+      userEmail: user?.email,
+      userName: user?.displayName,
+      joinedAt: new Date().toISOString(),
+    };
+
     const paymentInfo = {
       type: "paid",
       clubId: _id,
@@ -90,36 +116,11 @@ const ClubDetailsCard = () => {
         email: user?.email,
       },
     };
-    const { data } = await axiosSecure.post(
-      `${import.meta.env.VITE_API_URL}/create-checkout-session`,
-      paymentInfo
-    );
-    window.location.href = data.url;
 
-    // membership register info
-    const membershipData = {
-      clubMainId: _id,
-      clubId,
-      managerEmail,
-      clubName,
-      bannerImage,
-      status: clubs?.status,
-      paymentStatus: "paid",
-      userEmail: user?.email,
-      userName: user?.displayName,
-      joinedAt: new Date().toISOString(),
-    };
-
-    await mutateAsync(membershipData);
-    // await axios.post(
-    //   `${import.meta.env.VITE_API_URL}/memberships`,
-    //   membershipData
-    // );
+    await mutateAsync({ membershipData, paymentInfo });
   };
 
-  if (isLoading) return <LoadingSpinner />;
-  if (membershipLoading) return <LoadingSpinner />;
-
+  if (isLoading || membershipLoading) return <LoadingSpinner />;
   return (
     <>
       <div className="max-w-7xl mx-auto my-8 p-4">

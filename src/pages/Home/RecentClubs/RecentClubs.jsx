@@ -8,7 +8,7 @@ const RecentClubs = () => {
   const axiosSecure = useAxiosSecure();
   const currentStatus = "approved";
 
-  const { data: clubsData = {}, isLoading } = useQuery({
+  const { data: clubsData = [], isLoading } = useQuery({
     queryKey: ["recent-clubs", currentStatus],
     queryFn: async () => {
       const result = await axiosSecure(
@@ -27,7 +27,7 @@ const RecentClubs = () => {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-2 pb-5">
-        {clubsData.map((club,i) => (
+        {Array.isArray(clubsData) && clubsData.map((club, i) => (
           <RecentClubsCard key={club._id} club={club} i={i} />
         ))}
       </div>
